@@ -1,0 +1,313 @@
+/************** Sección del Menu Bar ******************/
+
+.nav {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(10, 42, 140);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.navIcon {
+    margin-top: 1.5em;
+    margin-right: 1.5rem;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+}
+
+.sidebarLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e1e9fc;
+    padding: 0.3em;
+    width: 100%;
+    height: 7%;
+    font-size: 1em;
+    list-style: none;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.sidebarLink:hover {
+    background: #252831;
+    border-left: 4px solid green;
+    cursor: pointer;
+}
+
+.sidebarTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.sidebarSubMenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e1e9fc;
+    padding-left: 0.3em;
+    padding-right: 1em;
+    height: 7%;
+    font-size: 1em;
+    list-style: none;
+    text-decoration: none;
+}
+
+.sidebarSubMenu:hover {
+    background: #252831;
+    border-left: 4px solid green;
+    cursor: pointer;
+}
+
+.sidebarLabel {
+    margin-left: 20px;
+    margin-right: 30px;
+}
+
+.dropdownLink {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #484e62;
+    color: #f5f5f5;
+    height: 7%;
+    font-size: 1em;
+    padding-left: 2rem;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.dropdownLink:hover {
+    background: rgb(88, 98, 88);
+    cursor: pointer;
+}
+
+.sidebarNav {
+    background: #15171c;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    transition: 1150ms;
+    z-index: 10;
+    box-shadow: 0 8px 12 px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(118, 12, 12, 0.19);
+}
+
+.sidebarTitulo {
+    margin-left: 20px;
+    color: rgb(248, 241, 15);
+    display: flex;
+    align-items: center;
+    height: 80px;
+    font-size: 2em;
+}
+
+.sidebarNav {
+    background: #15171c;
+    width: 20;
+    display: flex;
+    justify-content: flex-start;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 80px 0 rgba(0, 0, 0, 0.19);
+    align-items: start;
+
+}
+
+.sidebarNavLeft {
+    background: #15171c;
+    background: rgba(0, 0, 0, 0.75);
+    width: 25%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 1150ms;
+    z-index: 10;
+}
+
+.sidebarNavRigth {
+    background: #15171c;
+    background: rgba(0, 0, 0, 0.75);
+    width: 25%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 1.1em;
+    transition: 1150ms;
+    z-index: 10;
+}
+
+/************** Sección del Menu ******************/
+
+@media (min-width:150px) {
+    .sidebarWrap {
+        margin-left: 1em;
+        width: 100%;
+    }
+
+}
+
+@media (min-width:850px) {
+    .sidebarWrap {
+        float: left;
+    }
+}
+
+/************Fin Sección del Menu ******************/
+.navbar-form {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+/* Definimos las transiciones */
+.navbar-form .form-control[type=text] {
+    background: transparent;
+    display: inline-block;
+    transition: all .5s;
+}
+
+
+/* Al situar el puntero en el campo de búsqueda este cambia su color de fondo a blanco, el color de la letra, el borde y la sombra */
+.navbar-form .form-control[type=text]:focus {
+    background-color: #fff;
+    border-color: #a8bcd1;
+    color: #333;
+    -webkit-box-shadow: 0 0 2px rgba(170, 216, 234, 0.5);
+    -moz-box-shadow: 0 0 2px rgba(170, 216, 234, 0.5);
+    box-shadow: 0 0 2px rgba(170, 216, 234, 0.5);
+}
+
+/* Para pantallas grandes hacemos que el formulario se despliegue con amplitud ya que disponemos de espacio en la barra de navegación, la busqueda se ejecuta con intro o pinchando en el icono de la lupa */
+@media (min-width:1200px) {
+    .navbar-form input.form-control[type=text] {
+        width: 160px;
+    }
+
+    .navbar-form input.form-control[type=text]:focus {
+        width: 350px;
+    }
+
+
+}
+
+/* Para pantallas menores reducimos el campo de busqueda y hacemos que se despliegue cuando hacemos focus sobre el icono de la lupa. La busqueda se ejecuta con intro o pinchando de nuevo en el icono de la lupa */
+@media (max-width: 1200px) {
+    .navbar-form .form-control[type=text] {
+        width: 40px;
+        position: absolute;
+        right: 0px;
+        z-index: 1000;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .navbar-form,
+    .navbar-form div.input-group {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar-form .form-control[type=text]:focus {
+        position: absolute;
+        right: 40px;
+        width: 250px;
+    }
+}
+
+/* Para pantallas de smartphones ajustamos el ancho del campo de busqueda */
+@media (max-width: 375px) {
+    .navbar-form .form-control[type=text]:focus {
+        width: 150px;
+    }
+}
+
+/*********************************** Fin Buscador ***********************************/
+
+@media only screen and (max-width: 990px) {
+    .sidebarNavRigth {
+        width: 30%;
+    }
+
+    .sidebarTitulo {
+        font-size: 1.8em;
+    }
+
+}
+
+@media only screen and (max-width: 880px) {
+    .sidebarNavRigth {
+        width: 40%;
+    }
+
+}
+
+@media only screen and (max-width: 680px) {
+    .sidebarNavRigth {
+        width: 45%;
+    }
+
+
+    .sidebarTitulo {
+        font-size: 1.7em;
+    }
+
+}
+
+@media only screen and (max-width: 580px) {
+    .sidebarNavRigth {
+        width: 55%;
+    }
+
+    .sidebarTitulo {
+        font-size: 1.5em;
+    }
+
+}
+
+@media only screen and (max-width: 510px) {
+    .sidebarNavRigth {
+        width: 65%;
+    }
+
+    .fsize {
+        /* el tamaño por defecto es 14px */
+        font-size: 1.2rem;
+    }
+
+    .sidebarTitulo {
+        font-size: 1.2em;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .fsize {
+        /* el tamaño por defecto es 14px */
+        font-size: 0.9rem;
+    }
+
+
+    .sidebarNavRigth {
+        width: 75%;
+    }
+
+    .sidebarTitulo {
+        font-size: 1em;
+    }
+
+}
+
+@media only screen and (max-width: 250px) {
+    .sidebarNavRigth {
+        width: 90%;
+    }
+}
