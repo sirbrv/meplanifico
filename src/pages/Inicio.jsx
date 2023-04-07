@@ -6,7 +6,7 @@ import InfoCard from "../componets/Informacion";
 import { useSelector } from "react-redux";
 //import { axiosFetch } from "../hoocks/useAxios";
 import { useLocation } from "react-router-dom";
-import LoginSistema from "./administracion/users/Login";
+//import LoginSistema from "./administracion/users/Login";
 import registro from "../assets/images/registro.png";
 import "../App.css";
 
@@ -168,7 +168,7 @@ function Inicio() {
   }, [location]);
   return (
     <>
-      {!login && (
+      {/*!login && (
         <LoginSistema
           onClose={() => {
             setLogin(false);
@@ -177,7 +177,7 @@ function Inicio() {
             setLogin(true);
           }}
         />
-      )}
+        )*/}
 
       {login && (
         <>

@@ -1,35 +1,35 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./componets/Layout/Layout";
+//import Layout from "./componets/Layout/Layout";
 import Inicio from "./pages/Inicio";
-import LoginSistema from "./pages/administracion/users/Login";
+/*import LoginSistema from "./pages/administracion/users/Login";
 import CambioClave from "./pages/administracion/users/CambioClave";
 import ListarUsers from "./pages/administracion/users/ListarUsers";
-/*import ListarCondicionGasto from "./pages/administracion/condicionGastos/ListarCondicionGasto";
+import ListarCondicionGasto from "./pages/administracion/condicionGastos/ListarCondicionGasto";
 import ListarCondicionIngreso from "./pages/administracion/condicionIngresos/ListarCondicionIngreso";
 import ListarTipoGasto from "./pages/administracion/tipoGastos/ListarTipoGasto";
 import ListarTipoIngreso from "./pages/administracion/tipoIngresos/ListarTipoIngreso";
 import ListarIngreso from "./pages/ingresos/ListarIngresos";
 import ListarGasto from "./pages/gastos/ListarGastos";
 import EdoCta from "./pages/report/EdaCuenta";
-import ListarPlanes from "./pages/planes/ListarPlanes"; */
-import ListarContactos from "./pages/administracion/contactos/ListarContac";
-import Contacto from "./pages/Contacto";
+import ListarPlanes from "./pages/planes/ListarPlanes"; 
+import ListarContactos from "./pages/administracion/contactos/ListarContac"; */
+import Contacto from "./pages/Contacto"; 
 import Salir from "./pages/Salir";
 import "./App.css";
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout>
+        {/* <Layout> */}
           <Routes>
             <Route path="/" element={<Inicio />} />
             <Route path="/salir" element={<Salir />} />
             <Route path="/contact" element={<Contacto />} />
-            <Route path="/admin/contact" element={<ListarContactos />} />
+            {/*}     <Route path="/admin/contact" element={<ListarContactos />} />
             <Route path="/admin/users" element={<ListarUsers />} />
             <Route path="/acceso/cambioClave" element={<CambioClave />} />
             <Route path="/acceso/login" element={<LoginSistema />} />
-            {/*  <Route path="/admin/tipoGasto" element={<ListarTipoGasto />} />
+             <Route path="/admin/tipoGasto" element={<ListarTipoGasto />} />
             <Route path="/admin/tipoIngreso" element={<ListarTipoIngreso />} />
             <Route
               path="/admin/condicionGasto"
@@ -45,7 +45,7 @@ function App() {
             <Route path="/report/EdaCuenta" element={<EdoCta />} />
   */}
           </Routes>
-        </Layout>
+        {/* </Layout> */}
       </BrowserRouter>
     </div>
   );
