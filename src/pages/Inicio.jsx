@@ -22,7 +22,6 @@ function Inicio() {
     body: "",
   });
 
-
   /*
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -149,7 +148,7 @@ function Inicio() {
     } else {
       setLogin(true);
     }
- //   getImagen("planific.jpg");
+    //   getImagen("planific.jpg");
     //   getImagen("contact.png")
     // inicializafuncion();
     // getImagen("contact.png");
