@@ -14,7 +14,7 @@ import EdoCta from "./pages/report/EdaCuenta";
 import ListarPlanes from "./pages/planes/ListarPlanes"; 
 import ListarContactos from "./pages/administracion/contactos/ListarContac"; */
 import Contacto from "./pages/Contacto"; 
-import Salir from "./pages/Salir";
+//import Salir from "./pages/Salir";
 import "./App.css";
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         {/* <Layout> */}
           <Routes>
             <Route path="/" element={<Inicio />} />
-            <Route path="/salir" element={<Salir />} />
+            {/* <Route path="/salir" element={<Salir />} /> */}
             <Route path="/contact" element={<Contacto />} />
             {/*}     <Route path="/admin/contact" element={<ListarContactos />} />
             <Route path="/admin/users" element={<ListarUsers />} />

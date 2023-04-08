@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import registro from "../assets/images/registro.png";
 import "../App.css";
 
+/***** */
 function Inicio() {
   const [login, setLogin] = useState(false);
   const user = useSelector((state) => state.users.value);
