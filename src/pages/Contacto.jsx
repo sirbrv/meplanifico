@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-//import { axiosFetch } from "../hoocks/useAxios";
+import { axiosFetch } from "../hoocks/useAxios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-// import axios from "../api/direct";
+import axios from "../api/direct";
 import InfoModal from "./../componets/Informacion";
 import ChartMap from "./../componets/ChartMap";
 import registro from "../assets/images/registro.png";
@@ -85,7 +85,7 @@ function Contacto() {
       setBodymgs("Debe corregir los campos con errores");
       setSussecAdd(true);
     }
-    /*
+
     if (validError === 0) {
       let formData = {
         apellido: apellido.value,
@@ -142,7 +142,7 @@ function Contacto() {
           setSussecAdd(true);
           setBodymgs(err);
         });
-    }*/
+    }
   };
 
   const inputsHandler = (e) => {
