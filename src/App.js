@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout>
+        {/* <Layout> */}
           <Routes>
             <Route path="/" element={<Inicio />} />
             {/* <Route path="/salir" element={<Salir />} /> */}
@@ -45,7 +45,7 @@ function App() {
             <Route path="/report/EdaCuenta" element={<EdoCta />} />
   */}
           </Routes>
-        </Layout>
+        {/* </Layout> */}
       </BrowserRouter>
     </div>
   );
