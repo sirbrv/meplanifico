@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./componets/Layout/Layout";
+//import Layout from "./componets/Layout/Layout";
 import Inicio from "./pages/Inicio";
 /*import LoginSistema from "./pages/administracion/users/Login";
 import CambioClave from "./pages/administracion/users/CambioClave";
@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Layout>
+        {/* <Layout> */}
           <Routes>
             <Route path="/" element={<Inicio />} />
             {/* <Route path="/salir" element={<Salir />} /> */}
@@ -45,7 +45,7 @@ function App() {
             <Route path="/report/EdaCuenta" element={<EdoCta />} />
   */}
           </Routes>
-        </Layout>
+        {/* </Layout> */}
       </BrowserRouter>
     </div>
   );
