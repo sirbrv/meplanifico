@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../../componets/sidebar/Sidebar";
-import Footer from "../../pages/footer/Footer";
+//import Footer from "../../pages/footer/Footer";
 import Container from "react-bootstrap/Container";
 import "../../../src/App.css";
 
@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
       <main onClick={() => setCloseSidebar(!closesidebar)}>
         <Container fluid>{children}</Container>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
