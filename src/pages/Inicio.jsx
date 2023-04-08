@@ -12,11 +12,11 @@ import "../App.css";
 
 /***** */
 function Inicio() {
-  const [login, setLogin] = useState(false);
-  const user = useSelector((state) => state.users.value);
+  const [login, setLogin] = useState(true);
+ // const user = useSelector((state) => state.users.value);
   const location = useLocation();
   //const [images, setImages] = useState("");
-
+ 
   const [informacionCard, setInformacionCard] = useState({
     isOpen: false,
     title: "",
@@ -142,7 +142,7 @@ function Inicio() {
       }
     });
   };
-*/
+
   useEffect(() => {
     if (!user[0]) {
       location.state ? setLogin(true) : setLogin(false);
@@ -165,7 +165,7 @@ function Inicio() {
     }
     // inicializafuncion();
     // eslint-disable-next-line
-  }, [location]);
+  }, [location]); */
   return (
     <>
       {/*!login && (
