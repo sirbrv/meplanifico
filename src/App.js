@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./componets/Layout/Layout";
+//import Layout from "./componets/Layout/Layout";
 import Inicio from "./pages/Inicio";
 /*import LoginSistema from "./pages/administracion/users/Login";
 import CambioClave from "./pages/administracion/users/CambioClave";
