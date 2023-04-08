@@ -7,7 +7,7 @@ git status
 git commit -m "Carga inicial del proyecto"
 git push
 git push --set-upstream origin master
-git remote set-url origin https://github.com/sirbrv/meplanificobackend-git
+git remote set-url origin https://github.com/sirbrv/meplanificobackend.git
 git remote rm origin
 
 
