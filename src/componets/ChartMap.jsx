@@ -5,7 +5,6 @@ import "leaflet/dist/leaflet.css";
 function ChartMap() {
   // coordinates
   const position = [52.51, 13.38];
-
   // custom marker ---
   const customIcon = new Icon({
     iconUrl: require("../assets/locationIcon.svg"),

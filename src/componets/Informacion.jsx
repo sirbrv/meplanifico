@@ -4,8 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
-import "../App.css"
-
+import "../pages/ab.css"
 function Informacion({ titulo, descripcion, onClose }) {
   const [show, setShow] = useState(false);
 

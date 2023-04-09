@@ -4,7 +4,6 @@ import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 import * as RiIcons from "react-icons/ri";
 import * as FiIcons from "react-icons/fi";
-
 export const SidebarData = [
   {
     title: "Inicio",

@@ -6,7 +6,6 @@ import { IconContext } from "react-icons/lib";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
 import Button from "react-bootstrap/Button";
-
 const Sidebar = (closesidebar) => {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => {

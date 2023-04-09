@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { axiosFetch } from "../hoocks/useAxios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import axios from "../api/direct";
-import InfoModal from "./../componets/Informacion";
-import ChartMap from "./../componets/ChartMap";
-import registro from "../assets/images/registro.png";
+import InfoModal from "../../../componets/Informacion";
+import axios from "../../../api/direct";
+import { axiosFetch } from "../../../hoocks/useAxios";
+import "../../ab.css";
 
-function Contacto() {
+function ContactoModal({ tittle, onClose, registro, onConfirm }) {
   const [show, setShow] = useState(false);
   const [errores, setErrores] = useState([]);
   const [sussecAdd, setSussecAdd] = useState(false);
   const [bodymgs, setBodymgs] = useState([]);
+
+  const handleClose = () => [setShow(false), onClose()];
+
+  const handleShow = () => setShow(true);
 
   const [inputField, setInputField] = useState({
     id: "",
@@ -63,18 +67,27 @@ function Contacto() {
       errors.numTelefono = "Campo Requerído";
     } else if (names.numTelefono.length < 10) {
       cantErr = cantErr + 1;
-      errors.numTelefono =
-        "Número de teléfono no válido. Formato (999.999.999) ";
+      errors.numTelefono = "Número de teléfono no válido. Formato (999.999.999) ";
     }
+
+    /*    if (Object.keys(errors).length > 0) {
+        setValidated(true);
+    }
+    // setCantErr(Object.keys(errors).length)
+*/
     setErrores(errors);
     return cantErr;
   };
 
   const handleSubmit = async (e) => {
-    console.log("Pasé por aqui...");
     e.preventDefault();
-    const { apellido, nombre, email, comentario, numTelefono } =
-      e.target.elements;
+    const {
+      apellido,
+      nombre,
+      email,
+      comentario,
+      numTelefono,
+    } = e.target.elements;
     setInputField((inputField) => ({
       ...inputField,
       [e.target.name]: e.target.value,
@@ -92,11 +105,14 @@ function Contacto() {
         email: email.value,
         numTelefono: numTelefono.value,
         comentario: comentario.value,
-      };
+   };
       let newMethod = "POST";
       let newUrl = `${endpoint} `;
-      console.log("Pasé por envio...", axios, newUrl, formData);
 
+      if (registro) {
+        newMethod = "PUT";
+        newUrl = `${endpoint}/${registro} `;
+      }
       await axiosFetch({
         axiosInstance: axios,
         method: newMethod,
@@ -106,8 +122,9 @@ function Contacto() {
         },
       })
         .then((posts) => {
-          console.log(posts);
           if (posts.status === "200") {
+            //  dispatch(addUser(formData)); */
+
             if (posts.msg === undefined) {
               setSussecAdd(true);
               setBodymgs(posts.msg);
@@ -115,6 +132,7 @@ function Contacto() {
               setSussecAdd(true);
               setBodymgs(posts.msg);
             }
+            onConfirm();
           }
           if (posts.status === "201") {
             setInputField(() => ({
@@ -125,16 +143,18 @@ function Contacto() {
               comentario: "",
               numTelefono: "",
             }));
-            setBodymgs(posts.msg);
+            //  dispatch(addUser(formData)); */
             setSussecAdd(true);
-            setShow(true);
+            setBodymgs(posts.msg);
+            onConfirm();
           }
+
           if (posts.msg === undefined) {
             setSussecAdd(true);
             setBodymgs(posts.msg);
           } else {
-            setBodymgs(posts.msg);
             setSussecAdd(true);
+            setBodymgs(posts.msg);
           }
         })
         .catch((err) => {
@@ -149,25 +169,48 @@ function Contacto() {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+
     validar(inputField);
   };
 
+  const getContacto = async (reg) => {
+    const newUrl = `${endpoint}/${reg} `;
+    await axiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: newUrl,
+      requestConfig: {},
+    }).then((posts) => {
+      if (posts.status === "200" && "304") {
+         setInputField(() => ({
+          id: posts.data.id,
+          apellido: posts.data.apellido,
+          nombre: posts.data.nombre,
+          email: posts.data.email,
+          numTelefono: posts.data.numTelefono,
+          comentario: posts.data.comentario,
+        }));
+      } else {
+        setSussecAdd(true);
+        setBodymgs(posts.msg);
+      }
+    });
+  };
+  useEffect(() => {
+    if (registro) {
+      getContacto(registro);
+    }
+    handleShow();
+    // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
     if (sussecAdd) {
-      if (show) {
-        setShow(false);
-        setInformacionModal({
-          title: "Resultado de la Ejecución",
-          isOpen: true,
-          body: "Su comentário, fué ingresado de forma exitosa al sistema. La Revisaremos y le daremos pronta respuestas..",
-        });
-      } else {
-        setInformacionModal({
-          title: "Resultado de la Ejecución",
-          isOpen: true,
-          body: bodymgs,
-        });
-      }
+      setInformacionModal({
+        isOpen: true,
+        title: "Resultado de la Ejecución",
+        body: bodymgs,
+      });
       setSussecAdd(false);
     }
     // eslint-disable-next-line
@@ -175,16 +218,14 @@ function Contacto() {
 
   return (
     <>
-      <div className="siteMarco">
-        <Row className="mb-5">
-          <Form.Group as={Col} md="6">
-            <h3>Contactenos</h3>
-            <h1>Envianos un correo</h1>
-            <p>
-              Si requieres una aplicación como esta, para resulver alguna de tus
-              necesidades, escríbenos un mensaje y a la brevedad nos pondremos
-              en contacto..
-            </p>
+      <div className="m-5 shadow fsize">
+        <Modal show={show} onHide={handleClose} size="md">
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <h3 className="fsize">{tittle}</h3>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Form noValidate onSubmit={handleSubmit}>
               <Row className="mb-1">
                 <Form.Group as={Col} md="6">
@@ -247,6 +288,7 @@ function Contacto() {
                   </Form.Control.Feedback>
                 </Form.Group>
               </Row>
+
               <Row className="mb-1">
                 <Form.Group as={Col} md="6">
                   <Form.Label>
@@ -268,11 +310,12 @@ function Contacto() {
                   </Form.Control.Feedback>
                 </Form.Group>
               </Row>
+
               <Row className="mb-3" rows={4}>
                 <Form.Group as={Col} md="12">
                   <Form.Label>
                     {" "}
-                    <strong>Comentarios</strong>
+                    <strong>Comentario</strong>
                   </Form.Label>
                   <Form.Control
                     as="textarea"
@@ -281,40 +324,30 @@ function Contacto() {
                     id="comentario"
                     isInvalid={!!errores.comentario}
                     onChange={inputsHandler}
-                    //    checked={inputField.terminos}
                     value={inputField.comentario}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errores.comentario}
                   </Form.Control.Feedback>
                 </Form.Group>
-              </Row>
+              </Row> 
               <hr />
               <Row className="p-2 d-flex justify-content-between">
-                <Button variant="primary" type="submit">
-                  Contactanos
-                </Button>
+                <Col className="d-flex justify-content-start">
+                  <Button variant="danger" onClick={handleClose}>
+                    Cancelar
+                  </Button>
+                </Col>
+                <Col className="d-flex justify-content-end">
+                  <Button variant="primary" type="submit">
+                    Guardar
+                  </Button>
+                </Col>
               </Row>
             </Form>
-          </Form.Group>
-          <Form.Group as={Col} md="6">
-            <div className="bg-image hover-overlay m-5 mx-auto img-fluid w-100">
-              <img src={registro} alt="" height={60} className="img-fluid" />
-              <a href="#!">
-                <div
-                  className="mask overlay"
-                  style={{ backgroundColor: "rgba(57, 192, 237, 0.2)" }}
-                ></div>
-              </a>
-            </div>
-          </Form.Group>
-        </Row>
+          </Modal.Body>
+        </Modal>
       </div>
-      <Row>
-        <Form.Group as={Col} md="12">
-          <ChartMap />
-        </Form.Group>
-      </Row>
 
       {informacionModal.isOpen && (
         <InfoModal
@@ -328,5 +361,4 @@ function Contacto() {
     </>
   );
 }
-
-export default Contacto;
+export default ContactoModal;
