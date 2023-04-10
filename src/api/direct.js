@@ -6,7 +6,7 @@ let BASE_URL = "https://meplanificobackend.herokuapp.com";
 if (port == 4000) {
   BASE_URL = "http://localhost:4000";
 }
-
+console.log("En..:", process.env.PORT, "....:", BASE_URL);
 export default axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
