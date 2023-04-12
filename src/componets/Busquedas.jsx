@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import * as RiIcons from "react-icons/bs";
 import InputGroup from "react-bootstrap/InputGroup";
+import "./component.css";
+
 function Seach({ textSeach, busqueda, onConfirma }) {
   const [seach, setSeach] = useState("");
   const inputsHandler = (e) => {
@@ -15,10 +17,13 @@ function Seach({ textSeach, busqueda, onConfirma }) {
 
   return (
     <>
-      {/* <div className="marcoSeach"> */}
-        <form className="form-search" onSubmit={handleSubmit}>
-          <InputGroup>
-            <div className="input-group">
+      <div>
+        <form className="" onSubmit={handleSubmit}>
+          <InputGroup className="">
+            <div className="input-group mb-1 br-3">
+              <button className="btn btn-outline-primary">
+                <RiIcons.BsSearch />
+              </button>
               <input
                 className="form-control form-text"
                 placeholder={textSeach}
@@ -28,13 +33,10 @@ function Seach({ textSeach, busqueda, onConfirma }) {
                 name="buscar"
                 id="buscar"
               />
-              <button className="btn btn-primary ">
-                <RiIcons.BsSearch />
-              </button>
             </div>
           </InputGroup>
         </form>
-      {/* </div> */}
+      </div>
     </>
   );
 }
