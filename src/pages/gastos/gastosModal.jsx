@@ -21,8 +21,8 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
   const [calendario, setCalendario] = useState(false);
   const [selectTipoGasto, setSelectTipoGasto] = useState([]);
   const [selectCondicion, setSelectCondicion] = useState([]);
-  const [dateValue, setDateValue] = useState(new Date());
-  const [posts, setPosts] = useState([]);
+  //const [dateValue, setDateValue] = useState(new Date());
+  // const [posts, setPosts] = useState([]);
   const [bodymgs, setBodymgs] = useState([]);
 
   const handleClose = () => [setShow(false), onClose()];
@@ -69,6 +69,7 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
     e.preventDefault();
     const { fechaGasto, descripcion, tipoGasto, condicion, monto } =
       e.target.elements;
+      console.log("tipoGasto...:", tipoGasto);
     setInputField((inputField) => ({
       ...inputField,
       [e.target.name]: e.target.value,
@@ -79,20 +80,26 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
       setBodymgs("Debe corregir los campos con errores");
       setSussecAdd(true);
     }
+    console.log("voy a  grabar.....", validError);
     if (validError === 0) {
       let descripTipo = "";
+      console.log(tipoGasto);
+      // eslint-disable-next-line
       selectTipoGasto.map((option) => {
-        if (option.id == parseInt(tipoGasto.value)) {
+        console.log("Soy yo....:", option.id, "==", parseInt(tipoGasto.value));
+        if (option.id === parseInt(tipoGasto.value)) {
           descripTipo = option.descripcion;
         }
       });
+      console.log("Voy aqui.....", descripTipo);
       let descripCond = "";
+      // eslint-disable-next-line
       selectCondicion.map((option) => {
-        if (option.id == parseInt(condicion.value)) {
+        if (option.id === parseInt(condicion.value)) {
           descripCond = option.descripcion;
         }
       });
-
+      console.log("Voy aqui.....", descripTipo);
       let formData = {
         email: user[0].email,
         fechaGasto: fechaGasto.value,
@@ -110,6 +117,7 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
         newMethod = "PUT";
         newUrl = `${endpoint}/${registro} `;
       }
+      console.log("formData...:", formData);
       await axiosFetch({
         axiosInstance: axios,
         method: newMethod,
@@ -266,7 +274,7 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
         body: bodymgs,
       });
       setSussecAdd(false);
-      setPosts("");
+      //  setPosts("");
     }
     // eslint-disable-next-line
   }, [sussecAdd]);
@@ -316,7 +324,7 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
                   <Form.Control
                     as="select"
                     name="tipoGasto"
-                    defaultValue={inputField.tipoGasto}
+                    value={inputField.tipoGasto}
                     onChange={inputsHandler}
                   >
                     {selectTipoGasto.map((option) =>
@@ -432,16 +440,14 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
         <div className="m-5 shadow fsize d-flex align-items-center fullscreen-modal">
           <Modal show={show} onHide={setCalendario} size="sm">
             <Modal.Header closeButton>
-              <Modal.Title>
-                <h3 className="fsize"></h3>
-              </Modal.Title>
+              <Modal.Title>{/* <h3 className="fsize"></h3> */}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Calendar
                 //  minDate={new Date()}
                 //     selectRange={true}
                 onChange={(value) => setFecha(value)}
-                value={dateValue}
+                /* value={dateValue} */
               />
             </Modal.Body>
           </Modal>

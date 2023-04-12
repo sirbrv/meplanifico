@@ -35,8 +35,8 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
   const user = useSelector((state) => state.users.value);
 
   const [inputField, setInputField] = useState({
-    id: "",
     fechaPlanes: "",
+    id: "",
     year: "",
     mes: "",
     tipoGasto: "",
@@ -88,7 +88,7 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     if (validError === 0) {
       let descripTipo = "";
       selecttipoGasto.map((option) => {
-        if (option.id ===tipoGasto.value) {
+        if (option.id === parseInt(tipoGasto.value)) {
           descripTipo = option.descripcion;
         }
       });
@@ -103,7 +103,6 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
       };
       let newMethod = "POST";
       let newUrl = `${endpoint} `;
-console.log("formData...", formData)
       if (registro) {
         newMethod = "PUT";
         newUrl = `${endpoint}/${registro} `;
@@ -128,7 +127,7 @@ console.log("formData...", formData)
             }
             onConfirm();
           }
-          if (posts.status ==="201") {
+          if (posts.status === "201") {
             setInputField(() => ({
               id: "",
               fechaPlanes: "",
@@ -216,7 +215,15 @@ console.log("formData...", formData)
       requestConfig: {},
     }).then((posts) => {
       if (posts.status === "200" && "304") {
-        setInputField(posts.data);
+        setInputField({
+          fechaPlanes: posts.data.fechaPlanes,
+          id: posts.data.id,
+          year: posts.data.year,
+          mes: posts.data.mes,
+          tipoGasto: posts.data.tipoGasto,
+          tipoGastoDescrip: posts.data.tipoGastoDescrip,
+          monto: posts.data.monto,
+        });
       } else {
         setSussecAdd(true);
         setBodymgs(posts.msg);
@@ -298,7 +305,7 @@ console.log("formData...", formData)
                         name="fechaPlanes"
                         id="fechaPlanes"
                         //               onChange={(value) => setFecha(value)}
-                        value={formatDate(inputField.fechaPlanes)}
+                        defaultValue={formatDate(inputField.fechaPlanes)}
                         //    disabled
                       />{" "}
                       <Button
@@ -323,7 +330,7 @@ console.log("formData...", formData)
                       onChange={inputsHandler}
                     >
                       {selecttipoGasto.map((option) =>
-                        option.id ===parseInt(inputField.tipoGasto) ? (
+                        option.id === parseInt(inputField.tipoGasto) ? (
                           <option key={option.id} value={option.id} selected>
                             {option.descripcion}
                           </option>
@@ -354,7 +361,7 @@ console.log("formData...", formData)
                       onChange={inputsHandler}
                     >
                       {selectYear.map((option) =>
-                        option.year ===yearActual ? (
+                        option.year === yearActual ? (
                           <option
                             key={option.id}
                             defaultValue={option.year}
@@ -383,7 +390,7 @@ console.log("formData...", formData)
                       onChange={inputsHandler}
                     >
                       {selectMes.map((option) =>
-                        option.id ===parseInt(inputField.mes) ? (
+                        option.id === parseInt(inputField.mes) ? (
                           <option key={option.id} value={option.id} selected>
                             {option.mes}
                           </option>
