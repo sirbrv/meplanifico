@@ -446,8 +446,8 @@ function ListarGastos() {
                           name="meses"
                           onChange={inputsHandler}
                           disabled={disabledFecha}
-                        >
-                          {selectMes.map((option) =>
+                          >
+                            {selectMes.map((option) =>
                             option.id === shFecha ? (
                               <option
                                 key={option.id}
@@ -457,7 +457,7 @@ function ListarGastos() {
                                 {option.mes}
                               </option>
                             ) : (
-                              <option key={option.id} defaultValue={option.id}>
+                              <option key={option.id} value={option.id}>
                                 {option.mes}
                               </option>
                             )

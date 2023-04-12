@@ -82,13 +82,13 @@ function GastoModal({ tittle, onClose, registro, onConfirm }) {
     if (validError === 0) {
       let descripTipo = "";
       selectTipoGasto.map((option) => {
-        if (option.id === parseInt(tipoGasto.value)) {
+        if (option.id == parseInt(tipoGasto.value)) {
           descripTipo = option.descripcion;
         }
       });
       let descripCond = "";
       selectCondicion.map((option) => {
-        if (option.id === parseInt(condicion.value)) {
+        if (option.id == parseInt(condicion.value)) {
           descripCond = option.descripcion;
         }
       });
