@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../api/direct";
+import ControlAcceso from "../../../componets/ControlAcceso";
 import { axiosFetch } from "../../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
 //  ***** Call to React-Bosotrap ****************** //
@@ -49,7 +50,7 @@ function ListarCondicionIngreso() {
 
   //************  Constantes ********* */
   const user = useSelector((state) => state.users.value);
-
+  const [login, setLogin] = useState(false);
   const endpoint = "/api/admin/condicion";
 
   //*************  Funciones  axios*********** */
@@ -194,64 +195,75 @@ function ListarCondicionIngreso() {
 
   //*************  useEffect *********** */
   useEffect(() => {
-    getCondicionIngreso();
+    if (!user[0]) {
+      setLogin(false);
+    } else {
+      getCondicionIngreso();
+    }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getCondicionIngreso();
-    setGetRefrech(false);
+    if (!user[0]) {
+      setLogin(false);
+    } else {
+      getCondicionIngreso();
+      setGetRefrech(false);
+    }
     // eslint-disable-next-line
   }, [getRefrech, page, regshow]);
   return (
     <Container>
-      <div className="mx-4 my-3">
-        <Row className="m-3 d-flex align-items-center m -3">
-          <Col className="" sm={9} xs={8}>
-            <h3 className="fsize">Condiciones de Ingreso</h3>
-          </Col>
-          <Col className="d-flex justify-content-end" sm={3} xs={4}>
-            <Row className="d-flex justify-content-end">
-              <Col xs="12">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handdleAddCondicionIngreso}
-                >
-                  <RiIcons.FiPlus />
-                </Button>{" "}
-                <Button variant="primary" size="sm" onClick={handdleRefrech}>
-                  <RiIcons.FiRefreshCw />
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row className="d-flex align-items-center fsizeTable">
-          <Seach
-            textSeach=" Buscar por nombre. . . ."
-            seach=""
-            registro=""
-            onConfirma={(valor) => {
-              setSeach(valor);
-              handdleBuscar();
-            }}
-          />
-        </Row>
-      </div>
-      {loading && (
+      {!login && <ControlAcceso />}
+      {login && (
+        <div className="mx-4 my-3">
+          <Row className="m-3 d-flex align-items-center m -3">
+            <Col className="" sm={9} xs={8}>
+              <h3 className="fsize">Condiciones de Ingreso</h3>
+            </Col>
+            <Col className="d-flex justify-content-end" sm={3} xs={4}>
+              <Row className="d-flex justify-content-end">
+                <Col xs="12">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handdleAddCondicionIngreso}
+                  >
+                    <RiIcons.FiPlus />
+                  </Button>{" "}
+                  <Button variant="primary" size="sm" onClick={handdleRefrech}>
+                    <RiIcons.FiRefreshCw />
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row className="d-flex align-items-center fsizeTable">
+            <Seach
+              textSeach=" Buscar por nombre. . . ."
+              seach=""
+              registro=""
+              onConfirma={(valor) => {
+                setSeach(valor);
+                handdleBuscar();
+              }}
+            />
+          </Row>
+        </div>
+      )}
+      {login && loading && (
         <>
           <hr />
           <h5 className="mt-5 text-center">Loading...</h5>
         </>
       )}
-      {!loading && error && (
+      {login && !loading && error && (
         <>
           <hr />
           <h5 className="mt-5 text-center">{errorMsg}</h5>{" "}
         </>
       )}
-      {!loading && !error && condicionIngreso && (
+      {login && !loading && !error && condicionIngreso && (
         <>
           <Card className="mb-3 mx-3 shadow">
             <ListTable
@@ -278,7 +290,7 @@ function ListarCondicionIngreso() {
           </Card>
         </>
       )}
-      {!loading && !error && !condicionIngreso && (
+      {login && !loading && !error && !condicionIngreso && (
         <>
           <hr />
           <h4>No hay Registros</h4>

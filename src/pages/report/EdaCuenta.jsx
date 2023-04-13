@@ -304,13 +304,14 @@ function EdoCuentas() {
                               as="select"
                               name="year"
                               onChange={inputsHandler}
+                              value={yearActual}
                               //    disabled={disabledFecha}
                             >
                               {selectYear.map((option) =>
-                                option.year ===yearActual ? (
+                                option.year === yearActual ? (
                                   <option
                                     key={option.id}
-                                    value={option.year}
+                                    defaultValue={option.year}
                                     selected
                                   >
                                     {option.year}
@@ -383,7 +384,7 @@ function EdoCuentas() {
                 <Col sx="11"></Col>
                 <Col sx="2">
                   {selectMes.map((option) => {
-                    option.id ===inputSh.mes && (
+                    option.id === inputSh.mes && (
                       <option key={option.id}>
                         {option.mes + "  "}
                         {inputSh.year}
@@ -394,7 +395,10 @@ function EdoCuentas() {
               </Row>
               <hr />
               <div className="mb-5">
-                <LisTableIngresos datas={datos} totalIngreso={totalIngreso} />
+                <LisTableIngresos
+                  dataIngreso={datos}
+                  totalIngreso={totalIngreso}
+                />
                 {/* <Row>
                 <Col sx="6" md="7"></Col>
                 <Form.Group as={Col} xs="4" md="3" className=" fsizeTable">

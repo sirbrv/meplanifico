@@ -175,7 +175,7 @@ function ListarPlanes() {
     e.target.name === "meses" && (inputSh.mes = e.target.value);
     e.target.name === "year" && (inputSh.year = e.target.value);
     e.target.name === "tipoGasto" && (inputSh.tipo = e.target.value);
-   };
+  };
 
   const onMesChange = ({ target: { value } }) => {
     setDisabledFecha(!disabledFecha);
@@ -359,6 +359,7 @@ function ListarPlanes() {
                           as="select"
                           name="year"
                           onChange={inputsHandler}
+                          value={yearActual}
                           //    disabled={disabledFecha}
                         >
                           {selectYear.map((option) =>
@@ -409,7 +410,7 @@ function ListarPlanes() {
                           disabled={disabledTipo}
                           onChange={inputsHandler}
                         >
-                          <option key={0} defaultValue={0}></option>
+                          <option key={0} value={0}></option>
                           {selectTipoGasto.map((option) => (
                             <option key={option.id} value={option.id}>
                               {option.descripcion}
@@ -422,8 +423,8 @@ function ListarPlanes() {
                 </Col>
               </Form>
             </Row>
-            <Row className="mt-1 d-flex align-items-center sizeTable">
-              <Col xs="12" className="mb-4">
+            <Row className="mt-1 d-flex align-items-center justify-content-center sizeTable">
+              <Col xs="9" sm="9" md="10" className="mb-4">
                 <Seach
                   textSeach=" Buscar por tipo de gasto . . . ."
                   seach=""
@@ -433,6 +434,15 @@ function ListarPlanes() {
                     handdleBuscar();
                   }}
                 />
+              </Col>
+              <Col xs="3" sm="2" md="1" className="mb-4">
+                <Button
+                  variant="btn btn-success sizeTable"
+                  size="sm"
+                  //   onClick={handdleAdCopiar}
+                >
+                  Copiar
+                </Button>
               </Col>
             </Row>
           </section>
@@ -571,19 +581,19 @@ const selectYear = [
   { id: 20, year: "2040" },
 ];
 
-  const selectMes = [
-    { id: 1, mes: "Enero" },
-    { id: 2, mes: "Febrero" },
-    { id: 3, mes: "Marzo" },
-    { id: 4, mes: "Abríl" },
-    { id: 5, mes: "Mayo" },
-    { id: 6, mes: "Júnio" },
-    { id: 7, mes: "Julio" },
-    { id: 8, mes: "Agosto" },
-    { id: 9, mes: "Septiembre" },
-    { id: 10, mes: "Octubre" },
-    { id: 11, mes: "Noviembre" },
-    { id: 12, mes: "Diciembre" },
-  ];
+const selectMes = [
+  { id: 1, mes: "Enero" },
+  { id: 2, mes: "Febrero" },
+  { id: 3, mes: "Marzo" },
+  { id: 4, mes: "Abríl" },
+  { id: 5, mes: "Mayo" },
+  { id: 6, mes: "Júnio" },
+  { id: 7, mes: "Julio" },
+  { id: 8, mes: "Agosto" },
+  { id: 9, mes: "Septiembre" },
+  { id: 10, mes: "Octubre" },
+  { id: 11, mes: "Noviembre" },
+  { id: 12, mes: "Diciembre" },
+];
 
 export default ListarPlanes;

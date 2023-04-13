@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../../../api/direct";
 import { axiosFetch } from "../../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
+import ControlAcceso from "../../../componets/ControlAcceso";
 
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
@@ -14,7 +15,8 @@ import VerifyDelete from "../../../componets/VerifyDelete";
 import Pagination from "../../../componets/Pagination";
 import ListTables from "./ListTables";
 import UserModal from "./UserModal";
-//import "../../ab.css";
+//  ***** Call to Redux ****************** //
+import { useSelector } from "react-redux";
 
 function ListarUsers() {
   const [addModa, setAddModal] = useState(false);
@@ -39,6 +41,8 @@ function ListarUsers() {
     rol: "Rol",
   };
 
+  const user = useSelector((state) => state.users.value);
+  const [login, setLogin] = useState(false);
   const [register, setRegister] = useState("");
   const [getRefrech, setGetRefrech] = useState(false);
   const [error, setError] = useState(false);
@@ -48,7 +52,6 @@ function ListarUsers() {
   const [regshow, setRegshow] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [pageNext, setPageNext] = useState(false);
-
 
   //************  Constantes *********** */
   const endpoint = "/api/admin/user";
@@ -178,43 +181,50 @@ function ListarUsers() {
   useEffect(() => {
     gerUsers();
     setGetRefrech(false);
+    if (!user[0]) {
+      setLogin(false);
+    } 
+
     // eslint-disable-next-line
   }, [getRefrech, page, regshow]);
 
   return (
     <>
-      <div>
-        <Row className="m-3 d-flex justify-space-between">
-          <Col className="" sm={4} xs={4}>
-            <h3 className="fsize">Usuários</h3>
-          </Col>
-          <Col className="d-flex justify-content-end" sm={8} xs={8}>
-            <Row className="d-flex justify-content-end">
-              <Col xs="12">
-                <Button variant="primary" size="sm" onClick={handdleAddUser}>
-                  <RiIcons.FiPlus />
-                </Button>{" "}
-                <Button variant="primary" size="sm" onClick={handdleRefrech}>
-                  <RiIcons.FiRefreshCw />
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </div>
-      {loading && (
+      {!login && <ControlAcceso />}
+      {login && (
+        <div>
+          <Row className="m-3 d-flex justify-space-between">
+            <Col className="" sm={4} xs={4}>
+              <h3 className="fsize">Usuários</h3>
+            </Col>
+            <Col className="d-flex justify-content-end" sm={8} xs={8}>
+              <Row className="d-flex justify-content-end">
+                <Col xs="12">
+                  <Button variant="primary" size="sm" onClick={handdleAddUser}>
+                    <RiIcons.FiPlus />
+                  </Button>{" "}
+                  <Button variant="primary" size="sm" onClick={handdleRefrech}>
+                    <RiIcons.FiRefreshCw />
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+      )}
+      {login && loading && (
         <>
           <hr />
           <h5 className="mt-5 text-center">Loading...</h5>
         </>
       )}
-      {!loading && error && (
+      {login && !loading && error && (
         <>
           <hr />
           <h5 className="mt-5 text-center">{errorMsg}</h5>{" "}
         </>
       )}
-      {!loading && !error && users && (
+      {login && !loading && !error && users && (
         <>
           <Card className="mb-3 mx-3 shadow">
             <ListTables
@@ -240,13 +250,13 @@ function ListarUsers() {
           </Card>
         </>
       )}
-      {!loading && !error && !users && (
+      {login && !loading && !error && !users && (
         <>
           <hr />
           <h4>No hay Registros</h4>
         </>
       )}
-      {addModa && (
+      {login && addModa && (
         <UserModal
           className="modal-dialog"
           tittle="Adicionar Usuarios"
@@ -265,7 +275,7 @@ function ListarUsers() {
           }}
         />
       )}
-      {editModa && (
+      {login && editModa && (
         <UserModal
           tittle="Actualizar Usuarios"
           registro={register}

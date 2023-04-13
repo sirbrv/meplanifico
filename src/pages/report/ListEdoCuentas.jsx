@@ -2,7 +2,7 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 // { FiItalic } from "react-icons/fi";
 import "../ab.css";
-function LisTableIngresos({ datas, totalIngreso }) {
+function LisTableIngresos({ dataIngreso, totalIngreso }) {
   const formatoDate = (date) => {
     const [dFecha, hora] = date.split("T");
     const [year, month, day] = dFecha.split("-");
@@ -21,7 +21,7 @@ function LisTableIngresos({ datas, totalIngreso }) {
         </tr>
       </thead>
       <tbody>
-        {datas.map((item) => (
+        {dataIngreso.map((item) => (
           <tr className={item.dt === 1 ? "nomal" : "negrilla"} key={item.id}>
             <td align="center" className="wt-20">
               {item.fecha ? formatoDate(item.fecha) : ""}

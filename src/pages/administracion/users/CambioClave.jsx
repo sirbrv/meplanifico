@@ -204,6 +204,7 @@ function CambioClave({ tittle, onClose, registro, onConfirm }) {
                     isInvalid={!!errores.claveUsuario}
                     onChange={inputsHandler}
                     value={inputField.claveUsuario}
+                    autoComplete="off"
                   />
                   <Form.Control.Feedback type="invalid">
                     {errores.claveUsuario}
@@ -227,6 +228,7 @@ function CambioClave({ tittle, onClose, registro, onConfirm }) {
                     isInvalid={!!errores.claveNueva}
                     onChange={inputsHandler}
                     value={inputField.claveNueva}
+                    autoComplete="off"
                   />
                   <Form.Control.Feedback type="invalid">
                     {errores.claveNueva}
@@ -250,6 +252,7 @@ function CambioClave({ tittle, onClose, registro, onConfirm }) {
                     isInvalid={!!errores.claveRepetida}
                     onChange={inputsHandler}
                     value={inputField.claveRepetida}
+                    autoComplete="off"
                   />
                   <Form.Control.Feedback type="invalid">
                     {errores.claveRepetida}

@@ -395,6 +395,7 @@ function ListarIngresos() {
                           as="select"
                           name="year"
                           onChange={inputsHandler}
+                          value={yearActual}
                           //    disabled={disabledFecha}
                         >
                           {selectYear.map((option) =>
@@ -444,6 +445,7 @@ function ListarIngresos() {
                           as="select"
                           name="meses"
                           onChange={inputsHandler}
+                          value={shFecha}
                           disabled={disabledFecha}
                         >
                           {selectMes.map((option) =>

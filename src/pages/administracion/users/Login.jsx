@@ -184,7 +184,6 @@ function LoginSistema({ onClose, onConfirma }) {
                     </Form.Label>
                     <Form.Control
                       className="d-flex justify-content-end text-start"
-                      required
                       placeholder="Indique su Contraseña"
                       type="password"
                       name="claveUsuario"
@@ -192,6 +191,7 @@ function LoginSistema({ onClose, onConfirma }) {
                       isInvalid={!!errores.claveUsuario}
                       onChange={inputsHandler}
                       value={inputField.claveUsuario}
+                      autoComplete="off"
                     />
                     <Form.Control.Feedback type="invalid">
                       {errores.claveUsuario}

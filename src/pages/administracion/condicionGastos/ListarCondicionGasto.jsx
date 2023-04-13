@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../../../api/direct";
 import { axiosFetch } from "../../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
+import ControlAcceso from "../../../componets/ControlAcceso";
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/esm/Button";
@@ -49,7 +50,7 @@ function ListarCondicionGasto() {
 
   //************  Constantes ********* */
   const user = useSelector((state) => state.users.value);
-
+  const [login, setLogin] = useState(false);
   const endpoint = "/api/admin/condicion";
 
   //*************  Funciones  axios*********** */
@@ -194,62 +195,73 @@ function ListarCondicionGasto() {
 
   //*************  useEffect *********** */
   useEffect(() => {
-    getCondicionGasto();
+    if (!user[0]) {
+      setLogin(false);
+    } else {
+      getCondicionGasto();
+    }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getCondicionGasto();
-    setGetRefrech(false);
+    if (!user[0]) {
+      setLogin(false);
+    } else {
+      getCondicionGasto();
+      setGetRefrech(false);
+    }
     // eslint-disable-next-line
   }, [getRefrech, page, regshow]);
   return (
     <Container>
-      <div className="mx-4 my-3">
-        <Row className="m-3 d-flex align-items-center m -3">
-          <Col className="" sm={9} xs={8}>
-            <h3 className="fsize">Condiciones de Gasto</h3>
-          </Col>
-          <Col className="d-flex justify-content-end" sm={3} xs={4}>
-            <Row className="d-flex justify-content-end">
-              <Col xs="12">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handdleAddCondicionGasto}
-                >
-                  <RiIcons.FiPlus />
-                </Button>{" "}
-                <Button variant="primary" size="sm" onClick={handdleRefrech}>
-                  <RiIcons.FiRefreshCw />
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Seach
-          textSeach=" Buscar por nombre. . . ."
-          seach=""
-          registro=""
-          onConfirma={(valor) => {
-            setSeach(valor);
-            handdleBuscar();
-          }}
-        />
-      </div>
-      {loading && (
+      {!login && <ControlAcceso />}
+      {login && (
+        <div className="mx-4 my-3">
+          <Row className="m-3 d-flex align-items-center m -3">
+            <Col className="" sm={9} xs={8}>
+              <h3 className="fsize">Condiciones de Gasto</h3>
+            </Col>
+            <Col className="d-flex justify-content-end" sm={3} xs={4}>
+              <Row className="d-flex justify-content-end">
+                <Col xs="12">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handdleAddCondicionGasto}
+                  >
+                    <RiIcons.FiPlus />
+                  </Button>{" "}
+                  <Button variant="primary" size="sm" onClick={handdleRefrech}>
+                    <RiIcons.FiRefreshCw />
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Seach
+            textSeach=" Buscar por nombre. . . ."
+            seach=""
+            registro=""
+            onConfirma={(valor) => {
+              setSeach(valor);
+              handdleBuscar();
+            }}
+          />
+        </div>
+      )}
+      {login && loading && (
         <>
           <hr />
           <h5 className="mt-5 text-center">Loading...</h5>
         </>
       )}
-      {!loading && error && (
+      {login && !loading && error && (
         <>
           <hr />
           <h5 className="mt-5 text-center">{errorMsg}</h5>{" "}
         </>
       )}
-      {!loading && !error && condicionGasto && (
+      {login && !loading && !error && condicionGasto && (
         <>
           <Card className="mb-3 mx-3 shadow">
             <ListTable
@@ -276,7 +288,7 @@ function ListarCondicionGasto() {
           </Card>
         </>
       )}
-      {!loading && !error && !condicionGasto && (
+      {login && !loading && !error && !condicionGasto && (
         <>
           <hr />
           <h4>No hay Registros</h4>
