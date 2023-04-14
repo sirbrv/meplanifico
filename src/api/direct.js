@@ -5,7 +5,7 @@ let BASE_URL = "https://meplanificobackend.herokuapp.com";
 /*
 if (process.env.NODE_ENV === "development") {
   BASE_URL = "http://localhost:4000";
-}*/
+}*
 console.log(
   "En..:",
   process.env.REACT_APP_PORT,
@@ -13,7 +13,7 @@ console.log(
   process.env.NODE_ENV,
   ".....:",
   BASE_URL
-);
+);*/
 export default axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
