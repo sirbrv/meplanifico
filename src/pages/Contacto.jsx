@@ -71,7 +71,6 @@ function Contacto() {
   };
 
   const handleSubmit = async (e) => {
-    console.log("Pasé por aqui...");
     e.preventDefault();
     const { apellido, nombre, email, comentario, numTelefono } =
       e.target.elements;
