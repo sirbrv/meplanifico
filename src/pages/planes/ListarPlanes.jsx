@@ -3,6 +3,7 @@ import axios from "../../api/direct";
 import { axiosFetch } from "../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import CopyModel from "./copyModal";
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/esm/Button";
@@ -27,6 +28,7 @@ function ListarPlanes() {
   const [shFecha, setShFecha] = useState(0);
   const [shYear, setShYear] = useState(0);
   const [addModa, setAddModal] = useState(false);
+  const [copyModal, setCopyModal] = useState(false);
   const [editModa, setEditModal] = useState(false);
   const [planes, setPlanes] = useState([]);
   const [seach, setSeach] = useState("");
@@ -71,7 +73,6 @@ function ListarPlanes() {
   const [disabledCond, setDisabledCond] = useState(true);
 
   //************  Constantes ********* */
-  const userList = useSelector((state) => state.users.value);
   const endpoint = "/api/gestion/plan";
 
   //*************  Funciones  axios*********** */
@@ -188,6 +189,10 @@ function ListarPlanes() {
 
   const handdleAddPlanes = () => {
     setAddModal(true);
+  };
+
+  const handdleAdCopiar = () => {
+    setCopyModal(true);
   };
 
   const handdleEditIngreso = (id) => {
@@ -439,7 +444,7 @@ function ListarPlanes() {
                 <Button
                   variant="btn btn-success sizeTable"
                   size="sm"
-                  //   onClick={handdleAdCopiar}
+                  onClick={handdleAdCopiar}
                 >
                   Copiar
                 </Button>
@@ -529,6 +534,23 @@ function ListarPlanes() {
             });
           }}
           help={0}
+        />
+      )}
+      {copyModal && (
+        <CopyModel
+          tittle={"Copia de Planes"}
+          onClose={() => {
+            setCopyModal(false);
+            setInformacionModal({ title: "", body: "" });
+          }}
+          onConfirm={() => {
+            setCopyModal(false);
+            setInformacionModal({
+              isOpen: true,
+              title: "Resultado de la Ejecución",
+              body: "Planes Creado Correctamente",
+            });
+          }}
         />
       )}
       {informacionModal.isOpen && (
