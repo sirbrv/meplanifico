@@ -183,11 +183,12 @@ function ListarUsers() {
     setGetRefrech(false);
     if (!user[0]) {
       setLogin(false);
-    } 
+    } else {
+      setLogin(true);
+    }
 
     // eslint-disable-next-line
   }, [getRefrech, page, regshow]);
-
   return (
     <>
       {!login && <ControlAcceso />}

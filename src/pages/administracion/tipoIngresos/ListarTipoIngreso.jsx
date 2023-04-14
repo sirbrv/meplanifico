@@ -196,6 +196,7 @@ function ListarTipoIngreso() {
     if (!user[0]) {
       setLogin(false);
     } else {
+      setLogin(true);
       getTipoIngreso();
     }
     // eslint-disable-next-line
@@ -205,6 +206,7 @@ function ListarTipoIngreso() {
     if (!user[0]) {
       setLogin(false);
     } else {
+      setLogin(true);
       getTipoIngreso();
       setGetRefrech(false);
     }

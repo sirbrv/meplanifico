@@ -198,6 +198,7 @@ function ListarCondicionGasto() {
     if (!user[0]) {
       setLogin(false);
     } else {
+      setLogin(true);
       getCondicionGasto();
     }
     // eslint-disable-next-line
@@ -208,6 +209,7 @@ function ListarCondicionGasto() {
       setLogin(false);
     } else {
       getCondicionGasto();
+      setLogin(true);
       setGetRefrech(false);
     }
     // eslint-disable-next-line

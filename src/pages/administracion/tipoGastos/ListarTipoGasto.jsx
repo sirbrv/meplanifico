@@ -198,7 +198,8 @@ function ListarTipoGasto() {
     if (!user[0]) {
       setLogin(false);
     } else {
-      getTipoGasto();
+       setLogin(true);
+     getTipoGasto();
     }
     // eslint-disable-next-line
   }, []);
@@ -207,6 +208,7 @@ function ListarTipoGasto() {
     if (!user[0]) {
       setLogin(false);
     } else {
+      setLogin(true);
       getTipoGasto();
       setGetRefrech(false);
     }

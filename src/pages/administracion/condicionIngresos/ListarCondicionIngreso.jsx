@@ -198,7 +198,8 @@ function ListarCondicionIngreso() {
     if (!user[0]) {
       setLogin(false);
     } else {
-      getCondicionIngreso();
+       setLogin(true);
+     getCondicionIngreso();
     }
     // eslint-disable-next-line
   }, []);
@@ -207,7 +208,8 @@ function ListarCondicionIngreso() {
     if (!user[0]) {
       setLogin(false);
     } else {
-      getCondicionIngreso();
+       setLogin(true);
+     getCondicionIngreso();
       setGetRefrech(false);
     }
     // eslint-disable-next-line
