@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const port = process.env.REACT_APP_PORT || 4000;
+//const port = process.env.REACT_APP_PORT || 4000;
 let BASE_URL = "https://meplanificobackend.herokuapp.com";
 // eslint-disable-next-line
 if (process.env.NODE_ENV === "development") {
