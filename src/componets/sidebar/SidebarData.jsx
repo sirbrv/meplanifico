@@ -114,10 +114,14 @@ export const SidebarData = [
         path: "/acceso/login",
         icon: <FiIcons.FiLogIn />,
       },
-
       {
         title: "Cambiar Clave",
         path: "/acceso/cambioClave",
+        icon: <FaIcons.FaUsersCog />,
+      },
+      {
+        title: "Registro",
+        path: "/acceso/register",
         icon: <FaIcons.FaUsersCog />,
       },
     ],

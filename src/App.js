@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./componets/Layout/Layout";
 import Inicio from "./pages/Inicio";
+import Register from "./pages/Register";
 import LoginSistema from "./pages/administracion/users/Login";
 import CambioClave from "./pages/administracion/users/CambioClave";
 import ListarUsers from "./pages/administracion/users/ListarUsers";
@@ -28,7 +29,9 @@ function App() {
             <Route path="/admin/contact" element={<ListarContactos />} />
             <Route path="/admin/users" element={<ListarUsers />} />
             <Route path="/acceso/cambioClave" element={<CambioClave />} />
+            <Route path="/acceso/register" element={<Register />} />
             <Route path="/acceso/login" element={<LoginSistema />} />
+
             <Route path="/admin/tipoGasto" element={<ListarTipoGasto />} />
             <Route path="/admin/tipoIngreso" element={<ListarTipoIngreso />} />
             <Route

@@ -217,12 +217,12 @@ function LoginSistema({ onClose, onConfirma }) {
                     </Button>
                   </Col>
                 </Row>
-                <Row className="p-0 sizeCambio">
-                  <Col sx="8">
+                <Row className="sizeCambio d-flex justify-content-between">
+                  <Col className="sizeCambio d-flex justify-content-start">
                     <Link to="/acceso/cambioClave">Cambiar Clave</Link>
                   </Col>
-                  <Col sx="4">
-                    <Link to="/admin/users">Registrarse</Link>
+                  <Col className="sizeCambio d-flex justify-content-end">
+                    <Link to="/acceso/register">Registrarse</Link>
                   </Col>
                 </Row>
               </Card.Body>
