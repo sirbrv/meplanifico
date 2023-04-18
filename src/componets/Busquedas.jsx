@@ -3,14 +3,13 @@ import * as RiIcons from "react-icons/bs";
 import InputGroup from "react-bootstrap/InputGroup";
 import "./component.css";
 
-function Seach({ textSeach, busqueda, onConfirma }) {
+function Seach({ textSeach, onConfirma }) {
   const [seach, setSeach] = useState("");
   const inputsHandler = (e) => {
     setSeach(e.target.value);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSeach(e.target.value);
     e.target.value = "";
     onConfirma(seach);
   };
@@ -28,10 +27,9 @@ function Seach({ textSeach, busqueda, onConfirma }) {
                 className="form-control form-text"
                 placeholder={textSeach}
                 onChange={inputsHandler}
-                value={seach}
+                //         value={seach}
                 type="text"
                 name="buscar"
-                id="buscar"
               />
             </div>
           </InputGroup>

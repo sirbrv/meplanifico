@@ -313,6 +313,7 @@ function Registrer({ tittle, onClose, registro, onConfirm }) {
                     isInvalid={!!errores.userPassword}
                     onChange={inputsHandler}
                     value={inputField.userPassword}
+                    autoComplete="off"
                   />
                   <Form.Control.Feedback type="invalid">
                     {errores.userPassword}

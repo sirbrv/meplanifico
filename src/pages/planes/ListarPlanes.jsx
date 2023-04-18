@@ -4,6 +4,8 @@ import { axiosFetch } from "../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import CopyModel from "./copyModal";
+import { selectYear, selectMes } from "../../componets/ControlFecha";
+
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/esm/Button";
@@ -25,8 +27,6 @@ import Pagination from "../../componets/Pagination";
 import "../../App.css";
 
 function ListarPlanes() {
-  const [shFecha, setShFecha] = useState(0);
-  const [shYear, setShYear] = useState(0);
   const [addModa, setAddModal] = useState(false);
   const [copyModal, setCopyModal] = useState(false);
   const [editModa, setEditModal] = useState(false);
@@ -52,11 +52,9 @@ function ListarPlanes() {
     body: "",
   });
 
-  const [inputSh, setInputSh] = useState({
-    mes: "",
-    year: "",
-    tipo: "",
-  });
+  const [inputMes, setInputMes] = useState("");
+  const [inputYear, setInputYear] = useState(0);
+  const [inputTipo, setInputTipo] = useState("");
 
   const [register, setRegister] = useState("");
   const [getRefrech, setGetRefrech] = useState(false);
@@ -70,14 +68,14 @@ function ListarPlanes() {
   const [selectTipoGasto, setSelectTipoGasto] = useState([]);
   const [disabledFecha, setDisabledFecha] = useState(true);
   const [disabledTipo, setDisabledTipo] = useState(true);
-  const [disabledCond, setDisabledCond] = useState(true);
 
   //************  Constantes ********* */
-  const endpoint = "/api/gestion/plan";
 
   //*************  Funciones  axios*********** */
-
-  const getData = async () => {
+ // (inputTipo === null || inputTipo === undefined) && setInputTipo("");
+ const endpoint = "/api/gestion/plan";
+ const getData = async () => {
+    console.log(inputMes, inputYear, inputTipo);
     setLoading(true);
     const options = {
       email: user[0].email,
@@ -85,9 +83,9 @@ function ListarPlanes() {
       offset: (page - 1) * regshow,
       page: page,
       sch: seach,
-      shMes: inputSh.mes,
-      shYear: inputSh.year,
-      shTipo: inputSh.tipo,
+      shMes: inputMes,
+      shYear: inputYear,
+      shTipo: inputTipo,
     };
 
     axiosFetch({
@@ -169,13 +167,15 @@ function ListarPlanes() {
       }
     });
   };
-
   //*************  Funciones  axios*********** */
-
   const inputsHandler = (e) => {
-    e.target.name === "meses" && (inputSh.mes = e.target.value);
-    e.target.name === "year" && (inputSh.year = e.target.value);
-    e.target.name === "tipoGasto" && (inputSh.tipo = e.target.value);
+    e.preventDefault();
+    e.target.name === "meses" && setInputMes(e.target.value);
+    e.target.name === "year" && setInputYear(e.target.value);
+    e.target.name === "tipoGasto" && setInputTipo(e.target.value);
+    if (e.target.name === "tipoGasto" && e.target.value == 0) {
+      setInputTipo("");
+    }
   };
 
   const onMesChange = ({ target: { value } }) => {
@@ -183,7 +183,6 @@ function ListarPlanes() {
   };
 
   const onTipoChange = ({ target: { value } }) => {
-    inputSh.tipo = "";
     setDisabledTipo(!disabledTipo);
   };
 
@@ -217,7 +216,6 @@ function ListarPlanes() {
   };
 
   //*************  Funciones  de paginación *********** */
-
   const handlePrevious = () => {
     setPage((p) => {
       let prev = 1 * 1;
@@ -258,18 +256,17 @@ function ListarPlanes() {
       return prox;
     });
   };
-
-  const Inicializa = () => {
-    getPlanes();
-    getTipoGastos();
-    setShFecha(mesActual + 1);
-    setShYear(yearActual);
-    inputSh.mes = mesActual + 1;
-    inputSh.year = yearActual;
-  };
+  //*************  fin de paginación *********** */
 
   const acceesoControl = () => {
     navigate("/", { state: "" });
+  };
+
+  const Inicializa = () => {
+    setInputMes(mesActual + 1);
+    setInputYear(yearActual);
+    getPlanes();
+    getTipoGastos();
   };
 
   useEffect(() => {
@@ -283,13 +280,12 @@ function ListarPlanes() {
   }, []);
 
   useEffect(() => {
-    if (login) {
+ /*   if (login) {
       getPlanes();
       setGetRefrech(false);
-    }
-
+    } */
     // eslint-disable-next-line
-  }, [inputSh, getRefrech, page, regshow]);
+  }, [getRefrech, page, regshow, inputMes, inputYear, inputTipo]);
 
   return (
     <>
@@ -353,7 +349,7 @@ function ListarPlanes() {
                       <Col xs="7" md="6" lg="7">
                         <Form.Check
                           type="switch"
-                          label="Tipo"
+                          label="Grupo de Gasto"
                           onChange={onTipoChange}
                         />
                       </Col>
@@ -364,16 +360,11 @@ function ListarPlanes() {
                           as="select"
                           name="year"
                           onChange={inputsHandler}
-                        //  value={yearActual}
-                          //    disabled={disabledFecha}
+                          value={inputYear}
                         >
                           {selectYear.map((option) =>
-                            option.year === yearActual ? (
-                              <option
-                                key={option.id}
-                                value={option.year}
-                                selected
-                              >
+                            option.year === inputYear ? (
+                              <option key={option.id} value={option.year}>
                                 {option.year}
                               </option>
                             ) : (
@@ -390,14 +381,11 @@ function ListarPlanes() {
                           name="meses"
                           onChange={inputsHandler}
                           disabled={disabledFecha}
+                          value={inputMes}
                         >
                           {selectMes.map((option) =>
-                            option.id === shFecha ? (
-                              <option
-                                key={option.id}
-                                value={option.id}
-                                selected
-                              >
+                            option.id === inputMes ? (
+                              <option key={option.id} value={option.id}>
                                 {option.mes}
                               </option>
                             ) : (
@@ -578,44 +566,5 @@ function ListarPlanes() {
     </>
   );
 }
-
-const selectYear = [
-  { id: 0, year: 2020 },
-  { id: 1, year: 2021 },
-  { id: 2, year: 2022 },
-  { id: 3, year: 2023 },
-  { id: 4, year: 2024 },
-  { id: 5, year: 2025 },
-  { id: 6, year: 2026 },
-  { id: 7, year: 2027 },
-  { id: 8, year: 2028 },
-  { id: 9, year: 2029 },
-  { id: 10, year: 2030 },
-  { id: 11, year: 2031 },
-  { id: 12, year: 2032 },
-  { id: 13, year: 2033 },
-  { id: 14, year: 2034 },
-  { id: 15, year: 2035 },
-  { id: 16, year: 2036 },
-  { id: 17, year: 2037 },
-  { id: 18, year: 2008 },
-  { id: 19, year: 2039 },
-  { id: 20, year: 2040 },
-];
-
-const selectMes = [
-  { id: 1, mes: "Enero" },
-  { id: 2, mes: "Febrero" },
-  { id: 3, mes: "Marzo" },
-  { id: 4, mes: "Abríl" },
-  { id: 5, mes: "Mayo" },
-  { id: 6, mes: "Júnio" },
-  { id: 7, mes: "Julio" },
-  { id: 8, mes: "Agosto" },
-  { id: 9, mes: "Septiembre" },
-  { id: 10, mes: "Octubre" },
-  { id: 11, mes: "Noviembre" },
-  { id: 12, mes: "Diciembre" },
-];
 
 export default ListarPlanes;

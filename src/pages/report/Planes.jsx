@@ -32,7 +32,6 @@ function EdoCuentas() {
   let navigate = useNavigate();
   let datosPlan = [];
   let datosGasto = [];
-  let datosIngreso = [];
 
   const [informacionModal, setInformacionModal] = useState({
     isOpen: false,
@@ -51,7 +50,6 @@ function EdoCuentas() {
   const [disabledFecha, setDisabledFecha] = useState(true);
   //************  Constantes ********* */
   const userList = useSelector((state) => state.users.value);
-  let endpoint = "/api/gestion/plan";
   let totalIngreso = 0;
   let totalGasto = 0;
   let inputRt = new Array();
@@ -72,7 +70,7 @@ function EdoCuentas() {
       shCondicion: "",
     };
     /**************seccion de gastos********** */
-    let endpoint = "/api/gestion/gasto";
+    let endpoint = "/api/admin/grupoGasto";
     await axiosFetch({
       axiosInstance: axios,
       method: "GET",
@@ -82,11 +80,8 @@ function EdoCuentas() {
       },
     }).then((response) => {
       if (response.status === "200") {
-        setGastos(response.data.gastos);
-        let tem = response.data.gastos;
-        datosGasto = tem.sort((a, b) => {
-          return a.fecha - b.fecha;
-        });
+        setGastos(response.data.grupoGastos);
+        datosGasto = response.data.grupoGastos;
       }
     });
     /**************seccion de planes********** */
@@ -101,74 +96,32 @@ function EdoCuentas() {
     }).then((response) => {
       if (response.status === "200") {
         setPlanes(response.data.planes);
-        datosPlan = response.data.planes;
-      }
-    });
-    /**************seccion de ingresos********** */
-    let endpointi = "/api/gestion/ingreso";
-    await axiosFetch({
-      axiosInstance: axios,
-      method: "GET",
-      url: endpointi,
-      requestConfig: {
-        params: options,
-      },
-    }).then((response) => {
-      if (response.status === "200") {
-        setIngresos(response.data.ingresos);
-        datosIngreso = response.data.ingresos;
+        let tem = response.data.planes;
+        datosPlan = tem.sort((a, b) => {
+          return a.grupoGasto - b.grupoGasto;
+        });
       }
     });
     /**************fin seccion ********** */
-    await gastoControl(datosIngreso, datosPlan, datosGasto);
+    await gastoControl(datosPlan, datosGasto);
   };
 
-  const gastoControl = (ingresos, planes, gastos) => {
+  const gastoControl = (planes) => {
     let idem = 0;
-    ingresos.map((ingreso) => {
-      idem = idem + 1;
-      inputRt.push({
-        id: idem,
-        fecha: ingreso.fecha,
-        descripcion: ingreso.descripcion,
-        tipo: ingreso.tipoGastoDescripcion,
-        monto: ingreso.monto,
-        dt: 1,
-      });
-      totalIngreso = totalIngreso + ingreso.monto;
-    });
-
-    idem = idem + 1;
-    inputRt.push({
-      id: idem,
-      descripcion: "Total de Ingresos...",
-      monto: totalIngreso,
-      dt: 3,
-    });
-
+    let grupGasto = 0;
+    let descripcion = "";
+    subTotalGasto = 0;
+    let cta = 0;
     planes.map((plan) => {
-      subTotalGasto = 0;
-      let cta = 0;
-      let descripcion = "";
-      gastos.map((gasto) => {
-        setlog(true);
+      cta = 0;
 
-        if (gasto.tipoGasto === plan.tipoGasto) {
-          subTotalGasto = subTotalGasto + gasto.monto;
-          idem = idem + 1;
-          inputRt.push({
-            id: idem,
-            fecha: gasto.fecha,
-            descripcion: gasto.descripcion,
-            tipo: cta === 0 ? gasto.tipoGastoDescripcion : "",
-            monto: gasto.monto,
-            dt: 1,
-          });
-          cta = cta + 1;
-          descripcion = gasto.tipoGastoDescripcion;
+      if (
+        grupGasto != parseInt(plan.grupoGasto) &&
+        !isNaN(parseInt(plan.grupoGasto))
+      ) {
+        if (grupGasto === 0) {
+          descripcion = "Gastos Generales";
         }
-      });
-      if (cta > 1) {
         idem = idem + 1;
         inputRt.push({
           id: idem,
@@ -176,10 +129,56 @@ function EdoCuentas() {
           monto: subTotalGasto,
           dt: 2,
         });
+        grupGasto = parseInt(plan.grupoGasto);
+        totalGasto = totalGasto + subTotalGasto;
+        subTotalGasto = 0;
       }
-      totalGasto = totalGasto + subTotalGasto;
+      if (
+        grupGasto == parseInt(plan.grupoGasto) ||
+        !isNaN(parseInt(plan.grupoGasto))
+      ) {
+        idem = idem + 1;
+        inputRt.push({
+          id: idem,
+          fecha: plan.fecha,
+          //  descripcion: plan.grupoGastoDescripcion,
+          tipo: cta === 0 ? plan.tipoGastoDescripcion : "",
+          monto: plan.monto,
+          dt: 1,
+        });
+        subTotalGasto = subTotalGasto + plan.monto;
+        descripcion = plan.grupoGastoDescripcion;
+        cta = cta + 1;
+      }
+      if (isNaN(parseInt(plan.grupoGasto))) {
+        idem = idem + 1;
+        inputRt.push({
+          id: idem,
+          fecha: plan.fecha,
+          //  descripcion: plan.grupoGastoDescripcion,
+          tipo: cta === 0 ? plan.tipoGastoDescripcion : "",
+          monto: plan.monto,
+          dt: 1,
+        });
+        subTotalGasto = subTotalGasto + plan.monto;
+        descripcion = plan.grupoGastoDescripcion;
+        cta = cta + 1;
+      }
     });
-
+    if (cta > 0) {
+      idem = idem + 1;
+      if (descripcion === null) {
+        descripcion = "Gastos Generales";
+      }
+      inputRt.push({
+        id: idem,
+        descripcion: "Sub total " + descripcion,
+        monto: subTotalGasto,
+        dt: 2,
+      });
+      totalGasto = totalGasto + subTotalGasto;
+      subTotalGasto = 0;
+    }
     idem = idem + 1;
     inputRt.push({
       id: idem,
@@ -187,18 +186,6 @@ function EdoCuentas() {
       monto: totalGasto,
       dt: 3,
     });
-    let total = totalIngreso - totalGasto;
-    idem = idem + 1;
-    inputRt.push({
-      id: idem,
-      descripcion: "Total ( Ingreso - Gastos)..",
-      monto: total,
-      dt: 4,
-    });
-    /* console.log("ingresos..", ingresos);
-    console.log("Planes...:", planes);
-    console.log("gastos...:", gastos);
-    console.log("Resultado....:", inputRt); */
     setDatos(inputRt);
   };
 
@@ -269,7 +256,7 @@ function EdoCuentas() {
             <Row className="d-flex justify-space-between align-items-center fsizeTable">
               <Col sm={9} xs={8}>
                 <h3>{errorlog}</h3>
-                <h3 className="fsize">Relación de Ingresos y Gastos </h3>
+                <h3 className="fsize">Planificaciones</h3>
               </Col>
             </Row>
           </Container>
@@ -357,7 +344,7 @@ function EdoCuentas() {
           {!loading && (
             <>
               <Row className="d-flex justify-space-between text-center fsizeTable my-3">
-                <h5>Estado de Movimientos</h5>
+                <h5>Gastos Presupuestados</h5>
                 <Col sx="11"></Col>
                 <Col sx="2">
                   {selectMes.map((option) => {

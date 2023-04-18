@@ -3,6 +3,8 @@ import axios from "../../api/direct";
 import { axiosFetch } from "../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { selectYear, selectMes } from "../../componets/ControlFecha";
+
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/esm/Button";
@@ -24,12 +26,15 @@ import Pagination from "../../componets/Pagination";
 import "../../App.css";
 
 function ListarGastos() {
-  const [shFecha, setShFecha] = useState(0);
-  const [shYear, setShYear] = useState(0);
   const [addModa, setAddModal] = useState(false);
   const [editModa, setEditModal] = useState(false);
   const [gastos, setGastos] = useState([]);
   const [seach, setSeach] = useState("");
+
+  const [inputMes, setInputMes] = useState("");
+  const [inputYear, setInputYear] = useState(0);
+  const [inputTipo, setInputTipo] = useState("");
+  const [inputCondicion, setInputCondicion] = useState("");
 
   const textSeach = "";
   const fechaActual = new Date();
@@ -50,13 +55,6 @@ function ListarGastos() {
     body: "",
   });
 
-  const [inputSh, setInputSh] = useState({
-    mes: "",
-    year: "",
-    tipo: "",
-    condicion: "",
-  });
-
   const [register, setRegister] = useState("");
   const [getRefrech, setGetRefrech] = useState(false);
   const [error, setError] = useState(false);
@@ -68,8 +66,6 @@ function ListarGastos() {
   const [pageNext, setPageNext] = useState(false);
   const [selectTipoGasto, setSelectTipoGasto] = useState([]);
   const [selectCondicion, setSelectCondicion] = useState([]);
-  const [sehFecha, setSehfecha] = useState(false);
-
   const [disabledFecha, setDisabledFecha] = useState(true);
   const [disabledTipo, setDisabledTipo] = useState(true);
   const [disabledCond, setDisabledCond] = useState(true);
@@ -79,20 +75,6 @@ function ListarGastos() {
   const user = useSelector((state) => state.users.value);
 
   //*************  Funciones  axios*********** */
-  const selectMes = [
-    { id: 1, mes: "Enero" },
-    { id: 2, mes: "Febrero" },
-    { id: 3, mes: "Marzo" },
-    { id: 4, mes: "Abríl" },
-    { id: 5, mes: "Mayo" },
-    { id: 6, mes: "Júnio" },
-    { id: 7, mes: "Julio" },
-    { id: 8, mes: "Agosto" },
-    { id: 9, mes: "Septiembre" },
-    { id: 10, mes: "Octubre" },
-    { id: 11, mes: "Noviembre" },
-    { id: 12, mes: "Diciembre" },
-  ];
 
   const getData = async () => {
     setLoading(true);
@@ -103,12 +85,11 @@ function ListarGastos() {
       offset: (page - 1) * regshow,
       page: page,
       sch: seach,
-      shMes: inputSh.mes,
-      shYear: inputSh.year,
-      shTipo: inputSh.tipo,
-      shCondicion: inputSh.condicion,
+      shMes: inputMes,
+      shYear: inputYear,
+      shTipo: inputTipo,
+      shCondicion: inputCondicion,
     };
-
     axiosFetch({
       axiosInstance: axios,
       method: "GET",
@@ -216,10 +197,16 @@ function ListarGastos() {
   //*************  Funciones  axios*********** */
 
   const inputsHandler = (e) => {
-    e.target.name === "meses" && (inputSh.mes = e.target.value);
-    e.target.name === "year" && (inputSh.year = e.target.value);
-    e.target.name === "tipoGasto" && (inputSh.tipo = e.target.value);
-    e.target.name === "condicion" && (inputSh.condicion = e.target.value);
+    e.target.name === "meses" && setInputMes(e.target.value);
+    e.target.name === "year" && setInputYear(e.target.value);
+    e.target.name === "tipoGasto" && setInputTipo(e.target.value);
+    e.target.name === "condicion" && setInputCondicion(e.target.value);
+    if (e.target.name === "tipoGasto" && e.target.value == 0) {
+      setInputTipo("");
+    }
+    if (e.target.name === "condicion" && e.target.value == 0) {
+      setInputCondicion("");
+    }
   };
 
   const onMesChange = ({ target: { value } }) => {
@@ -227,12 +214,10 @@ function ListarGastos() {
   };
 
   const onTipoChange = ({ target: { value } }) => {
-    inputSh.tipo = "";
     setDisabledTipo(!disabledTipo);
   };
 
   const onCondicionChange = ({ target: { value } }) => {
-    inputSh.condicion = "";
     setDisabledCond(!disabledCond);
   };
 
@@ -307,13 +292,10 @@ function ListarGastos() {
   };
 
   const Inicializa = () => {
-    getGastos();
+    setInputMes(mesActual + 1);
+    setInputYear(yearActual);
     getTipoGastos();
     getCondicion();
-    setShFecha(mesActual + 1);
-    setShYear(yearActual);
-    inputSh.mes = mesActual + 1;
-    inputSh.year = yearActual;
   };
 
   const acceesoControl = () => {
@@ -336,7 +318,15 @@ function ListarGastos() {
       setGetRefrech(false);
     }
     // eslint-disable-next-line
-  }, [inputSh, getRefrech, page, regshow]);
+  }, [
+    getRefrech,
+    page,
+    regshow,
+    inputMes,
+    inputYear,
+    inputTipo,
+    inputCondicion,
+  ]);
 
   return (
     <>
@@ -393,15 +383,12 @@ function ListarGastos() {
                           as="select"
                           name="year"
                           onChange={inputsHandler}
+                          value={inputYear}
                           //    disabled={disabledFecha}
                         >
                           {selectYear.map((option) =>
-                            option.year === yearActual ? (
-                              <option
-                                key={option.id}
-                                value={option.year}
-                                selected
-                              >
+                            option.year === inputYear ? (
+                              <option key={option.id} value={option.year}>
                                 {option.year}
                               </option>
                             ) : (
@@ -446,14 +433,11 @@ function ListarGastos() {
                           name="meses"
                           onChange={inputsHandler}
                           disabled={disabledFecha}
-                          >
-                            {selectMes.map((option) =>
-                            option.id === shFecha ? (
-                              <option
-                                key={option.id}
-                                value={option.id}
-                                selected
-                              >
+                          value={inputMes}
+                        >
+                          {selectMes.map((option) =>
+                            option.id === inputMes ? (
+                              <option key={option.id} value={option.id}>
                                 {option.mes}
                               </option>
                             ) : (
@@ -622,29 +606,5 @@ function ListarGastos() {
     </>
   );
 }
-
-const selectYear = [
-  { id: 0, year: 2020 },
-  { id: 1, year: 2021 },
-  { id: 2, year: 2022 },
-  { id: 3, year: 2023 },
-  { id: 4, year: 2024 },
-  { id: 5, year: 2025 },
-  { id: 6, year: 2026 },
-  { id: 7, year: 2027 },
-  { id: 8, year: 2028 },
-  { id: 9, year: 2029 },
-  { id: 10, year: 2030 },
-  { id: 11, year: 2031 },
-  { id: 12, year: 2032 },
-  { id: 13, year: 2033 },
-  { id: 14, year: 2034 },
-  { id: 15, year: 2035 },
-  { id: 16, year: 2036 },
-  { id: 17, year: 2037 },
-  { id: 18, year: 2038 },
-  { id: 19, year: 2039 },
-  { id: 20, year: 2040 },
-];
 
 export default ListarGastos;

@@ -7,11 +7,13 @@ import CambioClave from "./pages/administracion/users/CambioClave";
 import ListarUsers from "./pages/administracion/users/ListarUsers";
 import ListarCondicionGasto from "./pages/administracion/condicionGastos/ListarCondicionGasto";
 import ListarCondicionIngreso from "./pages/administracion/condicionIngresos/ListarCondicionIngreso";
+import ListarGrupoGasto from "./pages/administracion/grupoGastos/ListarGrupoGasto";
 import ListarTipoGasto from "./pages/administracion/tipoGastos/ListarTipoGasto";
 import ListarTipoIngreso from "./pages/administracion/tipoIngresos/ListarTipoIngreso";
 import ListarIngreso from "./pages/ingresos/ListarIngresos";
 import ListarGasto from "./pages/gastos/ListarGastos";
 import EdoCta from "./pages/report/EdaCuenta";
+import Planes from "./pages/report/Planes";
 import ListarPlanes from "./pages/planes/ListarPlanes";
 import ListarContactos from "./pages/administracion/contactos/ListarContac";
 import Contacto from "./pages/Contacto";
@@ -32,6 +34,7 @@ function App() {
             <Route path="/acceso/register" element={<Register />} />
             <Route path="/acceso/login" element={<LoginSistema />} />
 
+            <Route path="/admin/grupoGasto" element={<ListarGrupoGasto />} />
             <Route path="/admin/tipoGasto" element={<ListarTipoGasto />} />
             <Route path="/admin/tipoIngreso" element={<ListarTipoIngreso />} />
             <Route
@@ -46,6 +49,7 @@ function App() {
             <Route path="/gestion/gasto" element={<ListarGasto />} />
             <Route path="/gestion/planes" element={<ListarPlanes />} />
             <Route path="/report/EdaCuenta" element={<EdoCta />} />
+            <Route path="/report/Planes" element={<Planes />} />
           </Routes>
         </Layout>
       </BrowserRouter>

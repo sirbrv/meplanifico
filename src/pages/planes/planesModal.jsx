@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import dayjs from "dayjs"; // ES 2015
+import InfoModal from "../../componets/Informacion";
+import { selectYear, selectMes } from "../../componets/ControlFecha";
+
+import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
-import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
-import InfoModal from "../../componets/Informacion";
+
 import axios from "../../api/direct";
 import { axiosFetch } from "../../hoocks/useAxios";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import dayjs from "dayjs"; // ES 2015
 import * as RiIcons from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +25,8 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
   const [sussecAdd, setSussecAdd] = useState(false);
   const [calendario, setCalendario] = useState(false);
   const [selecttipoGasto, setSelecttipoGasto] = useState([]);
+  const [selectGrupoGasto, setSelectGrupoGasto] = useState([]);
   const [dateValue, setDateValue] = useState(new Date());
-  const [posts, setPosts] = useState([]);
   const [bodymgs, setBodymgs] = useState([]);
   const [login, setLogin] = useState(false);
   let navigate = useNavigate();
@@ -41,6 +44,9 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     mes: "",
     tipoGasto: "",
     tipoGastoDescrip: "",
+    grupoGasto: "",
+    grupoGastoDescrip: "",
+    planDescripcion: "",
     monto: 0,
   });
 
@@ -74,7 +80,15 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { fechaPlanes, year, mes, tipoGasto, monto } = e.target.elements;
+    const {
+      fechaPlanes,
+      year,
+      mes,
+      tipoGasto,
+      grupoGasto,
+      planDescripcion,
+      monto,
+    } = e.target.elements;
     setInputField((inputField) => ({
       ...inputField,
       [e.target.name]: e.target.value,
@@ -87,9 +101,15 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     }
     if (validError === 0) {
       let descripTipo = "";
+      let descripGrupo = "";
       selecttipoGasto.map((option) => {
         if (option.id === parseInt(tipoGasto.value)) {
           descripTipo = option.descripcion;
+        }
+      });
+      selectGrupoGasto.map((option) => {
+        if (option.id === parseInt(grupoGasto.value)) {
+          descripGrupo = option.descripcion;
         }
       });
       let formData = {
@@ -99,6 +119,9 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
         mes: mes.value,
         tipoGasto: tipoGasto.value,
         tipoGastoDescrip: descripTipo,
+        grupoGasto: grupoGasto.value,
+        grupoGastoDescrip: descripGrupo,
+        descripcion: planDescripcion.value,
         monto: monto.value,
       };
       let newMethod = "POST";
@@ -131,10 +154,13 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
             setInputField(() => ({
               id: "",
               fechaPlanes: "",
-              year: "",
+              year: 0,
               mes: "",
               tipoGasto: "",
               tipoGastoDescrip: "",
+              grupoGasto: "",
+              grupoGastoDescrip: "",
+              planDescripcion: "",
               monto: 0,
             }));
             //  dispatch(addUser(formData)); */
@@ -181,6 +207,29 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     });
   };
 
+  const grupoGastos = async () => {
+    const endpoint = "/api/admin/grupoGasto";
+    const options = {
+      limit: 1000,
+      offset: 0,
+      page: 1,
+      sch: "",
+      email: user[0].email,
+    };
+    axiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: endpoint,
+      requestConfig: {
+        params: options,
+      },
+    }).then((response) => {
+      if (response.status === "200") {
+        setSelectGrupoGasto(response.data.grupoGastos);
+      }
+    });
+  };
+
   const inputsHandler = (e) => {
     setInputField((prevState) => ({
       ...prevState,
@@ -195,6 +244,7 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     inputField.mes = mesActual + 1;
     inputField.year = yearActual;
     tipoGasto();
+    grupoGastos();
   };
 
   const cambioFecha = () => {
@@ -222,6 +272,9 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
           mes: posts.data.mes,
           tipoGasto: posts.data.tipoGasto,
           tipoGastoDescrip: posts.data.tipoGastoDescrip,
+          grupoGasto: posts.data.grupoGasto,
+          grupoGastoDescrip: posts.data.grupoGastoDescrip,
+          planDescripcion: posts.data.descripcion,
           monto: posts.data.monto,
         });
       } else {
@@ -254,9 +307,7 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
           body: bodymgs,
         });
         setSussecAdd(false);
-        setPosts("");
       }
-      setPosts("");
     }
     // eslint-disable-next-line
   }, [sussecAdd]);
@@ -317,34 +368,6 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
                       </Button>
                     </InputGroup>
                   </Form.Group>
-
-                  <Form.Group as={Col} md="8">
-                    <Form.Label>
-                      {" "}
-                      <strong>Tipo de Gasto</strong>
-                    </Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="tipoGasto"
-                      value={inputField.tipoGasto}
-                      onChange={inputsHandler}
-                    >
-                      {selecttipoGasto.map((option) =>
-                        option.id === parseInt(inputField.tipoGasto) ? (
-                          <option key={option.id} value={option.id} selected>
-                            {option.descripcion}
-                          </option>
-                        ) : (
-                          <option key={option.id} value={option.id}>
-                            {option.descripcion}
-                          </option>
-                        )
-                      )}
-                    </Form.Control>
-                    <Form.Control.Feedback type="invalid">
-                      {errores.tipoGasto}
-                    </Form.Control.Feedback>
-                  </Form.Group>
                 </Row>
 
                 <Row>
@@ -362,11 +385,7 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
                     >
                       {selectYear.map((option) =>
                         option.year === yearActual ? (
-                          <option
-                            key={option.id}
-                            defaultValue={option.year}
-                            selected
-                          >
+                          <option key={option.id} defaultValue={option.year}>
                             {option.year}
                           </option>
                         ) : (
@@ -391,7 +410,7 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
                     >
                       {selectMes.map((option) =>
                         option.id === parseInt(inputField.mes) ? (
-                          <option key={option.id} value={option.id} selected>
+                          <option key={option.id} value={option.id}>
                             {option.mes}
                           </option>
                         ) : (
@@ -401,6 +420,87 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
                         )
                       )}
                     </Form.Control>
+                  </Form.Group>
+                </Row>
+
+                <Row>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>
+                      {" "}
+                      <strong>Tipo de Gasto</strong>
+                    </Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="tipoGasto"
+                      value={inputField.tipoGasto}
+                      onChange={inputsHandler}
+                    >
+                      <option key={0} value={0}></option>
+                      {selecttipoGasto.map((option) =>
+                        option.id === parseInt(inputField.tipoGasto) ? (
+                          <option key={option.id} value={option.id}>
+                            {option.descripcion}
+                          </option>
+                        ) : (
+                          <option key={option.id} value={option.id}>
+                            {option.descripcion}
+                          </option>
+                        )
+                      )}
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errores.tipoGasto}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>
+                      {" "}
+                      <strong>Grupo de Gasto</strong>
+                    </Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="grupoGasto"
+                      value={inputField.grupoGasto}
+                      onChange={inputsHandler}
+                    >
+                      <option key={0} value={0}></option>
+                      {selectGrupoGasto.map((option) =>
+                        option.id === parseInt(inputField.grupoGasto) ? (
+                          <option key={option.id} value={option.id}>
+                            {option.descripcion}
+                          </option>
+                        ) : (
+                          <option key={option.id} value={option.id}>
+                            {option.descripcion}
+                          </option>
+                        )
+                      )}
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errores.grupoGasto}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+
+                <Row className="mb-3" rows={2}>
+                  <Form.Group as={Col} md="12">
+                    <Form.Label>
+                      {" "}
+                      <strong>Descripción</strong>
+                    </Form.Label>
+                    <Form.Control
+                      required
+                      placeholder="Indique Descripción "
+                      name="planDescripcion"
+                      as="textarea"
+                      rows={3}
+                      id="planDescripcion"
+                      onChange={inputsHandler}
+                      value={inputField.planDescripcion}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errores.planDescripcion}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
 
@@ -482,44 +582,5 @@ function PlanesModal({ tittle, onClose, registro, onConfirm }) {
     </>
   );
 }
-
-const selectYear = [
-  { id: 0, year: "2020" },
-  { id: 1, year: "2021" },
-  { id: 2, year: "2022" },
-  { id: 3, year: "2023" },
-  { id: 4, year: "2024" },
-  { id: 5, year: "2025" },
-  { id: 6, year: "2026" },
-  { id: 7, year: "2027" },
-  { id: 8, year: "2028" },
-  { id: 9, year: "2029" },
-  { id: 10, year: "2030" },
-  { id: 11, year: "2031" },
-  { id: 12, year: "2032" },
-  { id: 13, year: "2033" },
-  { id: 14, year: "2034" },
-  { id: 15, year: "2035" },
-  { id: 16, year: "2036" },
-  { id: 17, year: "2037" },
-  { id: 18, year: "2008" },
-  { id: 19, year: "2039" },
-  { id: 20, year: "2040" },
-];
-
-const selectMes = [
-  { id: 1, mes: "Enero" },
-  { id: 2, mes: "Febrero" },
-  { id: 3, mes: "Marzo" },
-  { id: 4, mes: "Abríl" },
-  { id: 5, mes: "Mayo" },
-  { id: 6, mes: "Júnio" },
-  { id: 7, mes: "Julio" },
-  { id: 8, mes: "Agosto" },
-  { id: 9, mes: "Septiembre" },
-  { id: 10, mes: "Octubre" },
-  { id: 11, mes: "Noviembre" },
-  { id: 12, mes: "Diciembre" },
-];
 
 export default PlanesModal;

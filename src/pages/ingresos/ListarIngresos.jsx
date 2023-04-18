@@ -3,6 +3,7 @@ import axios from "../../api/direct";
 import { axiosFetch } from "../../hoocks/useAxios";
 import * as RiIcons from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { selectYear, selectMes } from "../../componets/ControlFecha";
 
 //  ***** Call to React-Bosotrap ****************** //
 import Card from "react-bootstrap/Card";
@@ -25,14 +26,11 @@ import Pagination from "../../componets/Pagination";
 import "../../App.css";
 
 function ListarIngresos() {
-  const [shFecha, setShFecha] = useState(0);
-  const [shYear, setShYear] = useState(0);
   const [addModa, setAddModal] = useState(false);
   const [editModa, setEditModal] = useState(false);
   const [ingresos, setIngresos] = useState([]);
   const [seach, setSeach] = useState("");
 
-  const textSeach = "";
   const fechaActual = new Date();
   const mesActual = fechaActual.getMonth();
   const yearActual = fechaActual.getFullYear();
@@ -52,13 +50,6 @@ function ListarIngresos() {
     body: "",
   });
 
-  const [inputSh, setInputSh] = useState({
-    mes: "",
-    year: "",
-    tipo: "",
-    condicion: "",
-  });
-
   const [register, setRegister] = useState("");
   const [getRefrech, setGetRefrech] = useState(false);
   const [error, setError] = useState(false);
@@ -70,31 +61,16 @@ function ListarIngresos() {
   const [pageNext, setPageNext] = useState(false);
   const [selectTipoIngreso, setSelectTipoIngreso] = useState([]);
   const [selectCondicion, setSelectCondicion] = useState([]);
-  const [sehFecha, setSehfecha] = useState(false);
-
   const [disabledFecha, setDisabledFecha] = useState(true);
   const [disabledTipo, setDisabledTipo] = useState(true);
   const [disabledCond, setDisabledCond] = useState(true);
+  const [inputMes, setInputMes] = useState("");
+  const [inputYear, setInputYear] = useState(0);
+  const [inputTipo, setInputTipo] = useState("");
+  const [inputCondicion, setInputCondicion] = useState("");
 
-  //************  Constantes ********* */
-  const userList = useSelector((state) => state.users.value);
-  const endpoint = "/api/gestion/ingreso";
   //*************  Funciones  axios*********** */
-  const selectMes = [
-    { id: 1, mes: "Enero" },
-    { id: 2, mes: "Febrero" },
-    { id: 3, mes: "Marzo" },
-    { id: 4, mes: "Abríl" },
-    { id: 5, mes: "Mayo" },
-    { id: 6, mes: "Júnio" },
-    { id: 7, mes: "Julio" },
-    { id: 8, mes: "Agosto" },
-    { id: 9, mes: "Septiembre" },
-    { id: 10, mes: "Octubre" },
-    { id: 11, mes: "Noviembre" },
-    { id: 12, mes: "Diciembre" },
-  ];
-
+  const endpoint = "/api/gestion/ingreso";
   const getData = async () => {
     setLoading(true);
     const options = {
@@ -103,10 +79,10 @@ function ListarIngresos() {
       offset: (page - 1) * regshow,
       page: page,
       sch: seach,
-      shMes: inputSh.mes,
-      shYear: inputSh.year,
-      shTipo: inputSh.tipo,
-      shCondicion: inputSh.condicion,
+      shMes: inputMes,
+      shYear: inputYear,
+      shTipo: inputTipo,
+      shCondicion: inputCondicion,
     };
 
     axiosFetch({
@@ -214,12 +190,17 @@ function ListarIngresos() {
   };
 
   //*************  Funciones  axios*********** */
-
   const inputsHandler = (e) => {
-    e.target.name === "meses" && (inputSh.mes = e.target.value);
-    e.target.name === "year" && (inputSh.year = e.target.value);
-    e.target.name === "tipoIngreso" && (inputSh.tipo = e.target.value);
-    e.target.name === "condicion" && (inputSh.condicion = e.target.value);
+    e.target.name === "meses" && setInputMes(e.target.value);
+    e.target.name === "year" && setInputYear(e.target.value);
+    e.target.name === "tipoIngreso" && setInputTipo(e.target.value);
+    e.target.name === "condicion" && setInputCondicion(e.target.value);
+    if (e.target.name === "tipoIngreso" && e.target.value == 0) {
+      setInputTipo("");
+    };
+    if (e.target.name === "condicion" && e.target.value == 0) {
+      setInputCondicion("");
+    };
   };
 
   const onMesChange = ({ target: { value } }) => {
@@ -227,12 +208,10 @@ function ListarIngresos() {
   };
 
   const onTipoChange = ({ target: { value } }) => {
-    inputSh.tipo = "";
     setDisabledTipo(!disabledTipo);
   };
 
   const onCondicionChange = ({ target: { value } }) => {
-    inputSh.condicion = "";
     setDisabledCond(!disabledCond);
   };
 
@@ -259,8 +238,6 @@ function ListarIngresos() {
       title: "Eliminación de Prodeevor",
       body: "Está seguro de eliminar el registro",
     });
-
-    //  dispatch(deleteProvee(id));
   };
 
   //*************  Funciones  de paginación *********** */
@@ -311,10 +288,8 @@ function ListarIngresos() {
     getIngresos();
     getTipoIngresos();
     getCondicion();
-    setShFecha(mesActual + 1);
-    setShYear(yearActual);
-    inputSh.mes = mesActual + 1;
-    inputSh.year = yearActual;
+    setInputMes(mesActual + 1);
+    setInputYear(yearActual);
   };
 
   const acceesoControl = () => {
@@ -336,9 +311,8 @@ function ListarIngresos() {
       getIngresos();
       setGetRefrech(false);
     }
-
     // eslint-disable-next-line
-  }, [inputSh, getRefrech, page, regshow]);
+  }, [getRefrech, page, regshow, inputMes, inputYear, inputTipo, inputCondicion]);
 
   return (
     <>
@@ -395,15 +369,14 @@ function ListarIngresos() {
                           as="select"
                           name="year"
                           onChange={inputsHandler}
-                         // value={yearActual}
+                          value={inputYear}
                           //    disabled={disabledFecha}
                         >
                           {selectYear.map((option) =>
-                            option.year === yearActual ? (
+                            option.year === inputYear ? (
                               <option
                                 key={option.id}
                                 value={option.year}
-                                selected
                               >
                                 {option.year}
                               </option>
@@ -445,15 +418,14 @@ function ListarIngresos() {
                           as="select"
                           name="meses"
                           onChange={inputsHandler}
-                          value={shFecha}
+                          value={inputMes}
                           disabled={disabledFecha}
                         >
                           {selectMes.map((option) =>
-                            option.id === shFecha ? (
+                            option.id === inputMes ? (
                               <option
                                 key={option.id}
                                 value={option.id}
-                                selected
                               >
                                 {option.mes}
                               </option>
@@ -622,29 +594,5 @@ function ListarIngresos() {
     </>
   );
 }
-
-const selectYear = [
-  { id: 0, year: 2020 },
-  { id: 1, year: 2021 },
-  { id: 2, year: 2022 },
-  { id: 3, year: 2023 },
-  { id: 4, year: 2024 },
-  { id: 5, year: 2025 },
-  { id: 6, year: 2026 },
-  { id: 7, year: 2027 },
-  { id: 8, year: 2028 },
-  { id: 9, year: 2029 },
-  { id: 10, year: 2030 },
-  { id: 11, year: 2031 },
-  { id: 12, year: 2032 },
-  { id: 13, year: 2033 },
-  { id: 14, year: 2034 },
-  { id: 15, year: 2035 },
-  { id: 16, year: 2036 },
-  { id: 17, year: 2037 },
-  { id: 18, year: 2038 },
-  { id: 19, year: 2039 },
-  { id: 20, year: 2040 },
-];
 
 export default ListarIngresos;

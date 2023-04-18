@@ -53,6 +53,12 @@ export const SidebarData = [
         icon: <IoIcons.IoIosPaper />,
         cName: "sub-nav",
       },
+      {
+        title: "Planes Mensuales",
+        path: "/report/planes",
+        icon: <IoIcons.IoIosPaper />,
+        cName: "sub-nav",
+      },
     ],
   },
   {
@@ -72,6 +78,12 @@ export const SidebarData = [
         title: "Tipo de Ingresos",
         path: "/admin/tipoIngreso",
         icon: <FaIcons.FaUserTie />,
+        cName: "sub-nav",
+      },
+      {
+        title: "Grupo de Gastos",
+        path: "/admin/grupoGasto",
+        icon: <FaIcons.FaTruckPickup />,
         cName: "sub-nav",
       },
       {
