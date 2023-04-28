@@ -72,10 +72,9 @@ function ListarPlanes() {
   //************  Constantes ********* */
 
   //*************  Funciones  axios*********** */
- // (inputTipo === null || inputTipo === undefined) && setInputTipo("");
- const endpoint = "/api/gestion/plan";
- const getData = async () => {
-    console.log(inputMes, inputYear, inputTipo);
+  // (inputTipo === null || inputTipo === undefined) && setInputTipo("");
+  const endpoint = "/api/gestion/plan";
+  const getData = async () => {
     setLoading(true);
     const options = {
       email: user[0].email,
@@ -173,7 +172,7 @@ function ListarPlanes() {
     e.target.name === "meses" && setInputMes(e.target.value);
     e.target.name === "year" && setInputYear(e.target.value);
     e.target.name === "tipoGasto" && setInputTipo(e.target.value);
-    if (e.target.name === "tipoGasto" && e.target.value == 0) {
+    if (e.target.name === "tipoGasto" && e.target.value === 0) {
       setInputTipo("");
     }
   };
@@ -280,10 +279,10 @@ function ListarPlanes() {
   }, []);
 
   useEffect(() => {
- /*   if (login) {
+    if (login) {
       getPlanes();
       setGetRefrech(false);
-    } */
+    }
     // eslint-disable-next-line
   }, [getRefrech, page, regshow, inputMes, inputYear, inputTipo]);
 
