@@ -48,10 +48,8 @@ function EdoCuentas() {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false); //different!
   const [page, setPage] = useState(1);
-  const [disabledFecha, setDisabledFecha] = useState(true);
   //************  Constantes ********* */
-  const userList = useSelector((state) => state.users.value);
-  let endpoint = "/api/gestion/plan";
+  // let endpoint = "/api/gestion/plan";
   let totalIngreso = 0;
   let totalGasto = 0;
   let inputRt = new Array();
@@ -145,14 +143,13 @@ function EdoCuentas() {
       monto: totalIngreso,
       dt: 3,
     });
-
+    /*
     planes.map((plan) => {
       subTotalGasto = 0;
       let cta = 0;
       let descripcion = "";
       gastos.map((gasto) => {
         setlog(true);
-
         if (gasto.tipoGasto === plan.tipoGasto) {
           subTotalGasto = subTotalGasto + gasto.monto;
           idem = idem + 1;
@@ -178,6 +175,60 @@ function EdoCuentas() {
         });
       }
       totalGasto = totalGasto + subTotalGasto;
+    });
+*/
+    let gastosSort = gastos.sort(compare);
+
+    let comparaGasto = 0;
+    gastosSort[0]
+      ? (comparaGasto = gastosSort[0].tipoGasto)
+      : (comparaGasto = 0);
+    gastos = gastosSort;
+    let cta = 0;
+    let descripcion = "";
+    gastos.map((gasto) => {
+      setlog(true);
+      if (gasto.tipoGasto === comparaGasto) {
+        subTotalGasto = subTotalGasto + gasto.monto;
+        idem = idem + 1;
+        inputRt.push({
+          id: idem,
+          fecha: gasto.fecha,
+          descripcion: gasto.descripcion,
+          tipo: cta === 0 ? gasto.tipoGastoDescripcion : "",
+          monto: gasto.monto,
+          dt: 1,
+        });
+        cta = cta + 1;
+        descripcion = gasto.tipoGastoDescripcion;
+      } else {
+        if (cta > 0) {
+          idem = idem + 1;
+          comparaGasto = gasto.tipoGasto;
+          cta = 0;
+          inputRt.push({
+            id: idem,
+            descripcion: descripcion,
+            monto: subTotalGasto,
+            dt: 2,
+          });
+        }
+        totalGasto = totalGasto + subTotalGasto;
+        subTotalGasto = 0;
+
+        subTotalGasto = subTotalGasto + gasto.monto;
+        idem = idem + 1;
+        inputRt.push({
+          id: idem,
+          fecha: gasto.fecha,
+          descripcion: gasto.descripcion,
+          tipo: cta === 0 ? gasto.tipoGastoDescripcion : "",
+          monto: gasto.monto,
+          dt: 1,
+        });
+        cta = cta + 1;
+        descripcion = gasto.tipoGastoDescripcion;
+      }
     });
 
     idem = idem + 1;
@@ -416,6 +467,12 @@ function EdoCuentas() {
       </Container>
     </>
   );
+}
+
+function compare(a, b) {
+  if (a.tipoGasto > b.tipoGasto) return 1;
+  if (a.tipoGasto < b.tipoGasto) return -1;
+  return 0;
 }
 
 export default EdoCuentas;

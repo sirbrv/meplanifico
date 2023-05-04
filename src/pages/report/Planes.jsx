@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 //import { getUsers, deleteProvee } from "../../feachures/users/UsersSlice";
 
 //  ***** Call to Aplication ****************** //
-import LisTableIngresos from "./ListEdoCuentas";
+import LisTableIngresos from "./ListPlanes";
 import InfoModal from "../../componets/Informacion";
 import "../../App.css";
 
@@ -110,13 +110,15 @@ function EdoCuentas() {
     let idem = 0;
     let grupGasto = 0;
     let descripcion = "";
+    let descrip = "";
     subTotalGasto = 0;
     let cta = 0;
     planes.map((plan) => {
-      cta = 0;
-
+      plan.grupoGastoDescripcion
+        ? (descrip = plan.grupoGastoDescripcion)
+        : (descrip = "Gastos Generales");
       if (
-        grupGasto != parseInt(plan.grupoGasto) &&
+        grupGasto !== parseInt(plan.grupoGasto) &&
         !isNaN(parseInt(plan.grupoGasto))
       ) {
         if (grupGasto === 0) {
@@ -132,17 +134,18 @@ function EdoCuentas() {
         grupGasto = parseInt(plan.grupoGasto);
         totalGasto = totalGasto + subTotalGasto;
         subTotalGasto = 0;
+        cta = 0;
       }
       if (
-        grupGasto == parseInt(plan.grupoGasto) ||
+        grupGasto === parseInt(plan.grupoGasto) ||
         !isNaN(parseInt(plan.grupoGasto))
       ) {
         idem = idem + 1;
         inputRt.push({
           id: idem,
           fecha: plan.fecha,
-          //  descripcion: plan.grupoGastoDescripcion,
-          tipo: cta === 0 ? plan.tipoGastoDescripcion : "",
+          descripcion: cta === 0 ? descrip : "",
+          tipo: plan.tipoGastoDescripcion,
           monto: plan.monto,
           dt: 1,
         });
@@ -155,8 +158,8 @@ function EdoCuentas() {
         inputRt.push({
           id: idem,
           fecha: plan.fecha,
-          //  descripcion: plan.grupoGastoDescripcion,
-          tipo: cta === 0 ? plan.tipoGastoDescripcion : "",
+          descripcion: cta === 0 ? descrip : "",
+          tipo: plan.tipoGastoDescripcion,
           monto: plan.monto,
           dt: 1,
         });

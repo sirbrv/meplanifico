@@ -1,6 +1,6 @@
 Para pase a github
 ************************************************************************
-    git init 
+git init 
 git remote add origin https://github.com/sirbrv/meplanificobackend.git
 git add .
 git status
