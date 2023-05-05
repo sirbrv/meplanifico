@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import InfoModal from "../../componets/Informacion";
 import axios from "../../api/direct";
 import { axiosFetch } from "../../hoocks/useAxios";
-import * as RiIcons from "react-icons/fi";
+import { selectYear, selectMes } from "../../componets/ControlFecha";
 import { useSelector } from "react-redux";
 import "../ab.css";
 
@@ -201,12 +201,12 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                     as="select"
                     isInvalid={!!errores.mes}
                     name="mes"
-             //       value={inputField.mes}
+                    value={inputField.mes}
                     onChange={inputsHandler}
                   >
                     {selectMes.map((option) =>
                       option.id === parseInt(inputField.mes) ? (
-                        <option key={option.id} value={option.id} selected>
+                        <option key={option.id} value={option.id} >
                           {option.mes}
                         </option>
                       ) : (
@@ -226,7 +226,7 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                     as="select"
                     isInvalid={!!errores.year}
                     name="year"
-           //         value={inputField.year}
+                    value={inputField.year}
                     onChange={inputsHandler}
                   >
                     {selectYear.map((option) =>
@@ -234,7 +234,6 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                         <option
                           key={option.id}
                           defaultValue={option.year}
-                          selected
                         >
                           {option.year}
                         </option>
@@ -261,12 +260,12 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                     as="select"
                     isInvalid={!!errores.mes}
                     name="hmes"
-           //         value={inputField.hmes}
+                    value={inputField.hmes}
                     onChange={inputsHandler}
                   >
                     {selectMes.map((option) =>
                       option.id === parseInt(inputField.hmes) ? (
-                        <option key={option.id} value={option.id} selected>
+                        <option key={option.id} value={option.id} >
                           {option.mes}
                         </option>
                       ) : (
@@ -282,7 +281,7 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                     as="select"
                     isInvalid={!!errores.year}
                     name="hyear"
-                //    value={inputField.hyear}
+                    value={inputField.hyear}
                     onChange={inputsHandler}
                   >
                     {selectYear.map((option) =>
@@ -290,7 +289,6 @@ function CopyModel({ tittle, onClose, onConfirm }) {
                         <option
                           key={option.id}
                           defaultValue={option.year}
-                          selected
                         >
                           {option.year}
                         </option>
@@ -334,44 +332,5 @@ function CopyModel({ tittle, onClose, onConfirm }) {
     </>
   );
 }
-
-const selectYear = [
-  { id: 0, year: 2020 },
-  { id: 1, year: 2021 },
-  { id: 2, year: 2022 },
-  { id: 3, year: 2023 },
-  { id: 4, year: 2024 },
-  { id: 5, year: 2025 },
-  { id: 6, year: 2026 },
-  { id: 7, year: 2027 },
-  { id: 8, year: 2028 },
-  { id: 9, year: 2029 },
-  { id: 10, year: 2030 },
-  { id: 11, year: 2031 },
-  { id: 12, year: 2032 },
-  { id: 13, year: 2033 },
-  { id: 14, year: 2034 },
-  { id: 15, year: 2035 },
-  { id: 16, year: 2036 },
-  { id: 17, year: 2037 },
-  { id: 18, year: 2038 },
-  { id: 19, year: 2039 },
-  { id: 20, year: 2040 },
-];
-
-const selectMes = [
-  { id: 1, mes: "Enero" },
-  { id: 2, mes: "Febrero" },
-  { id: 3, mes: "Marzo" },
-  { id: 4, mes: "Abríl" },
-  { id: 5, mes: "Mayo" },
-  { id: 6, mes: "Júnio" },
-  { id: 7, mes: "Julio" },
-  { id: 8, mes: "Agosto" },
-  { id: 9, mes: "Septiembre" },
-  { id: 10, mes: "Octubre" },
-  { id: 11, mes: "Noviembre" },
-  { id: 12, mes: "Diciembre" },
-];
 
 export default CopyModel;

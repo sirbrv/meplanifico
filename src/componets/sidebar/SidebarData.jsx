@@ -45,10 +45,9 @@ export const SidebarData = [
     icon: <FiIcons.FiLayers />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
-
     subNav: [
       {
-        title: "Estado de Pago",
+        title: "Ingresos y Gastos",
         path: "/report/EdaCuenta",
         icon: <IoIcons.IoIosPaper />,
         cName: "sub-nav",

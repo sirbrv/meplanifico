@@ -20,8 +20,6 @@ import InfoModal from "../../componets/Informacion";
 import "../../App.css";
 
 function EdoCuentas() {
-  const [gastos, setGastos] = useState([]);
-  const [ingresos, setIngresos] = useState([]);
   const [planes, setPlanes] = useState([]);
   const [datos, setDatos] = useState([]);
   const fechaActual = new Date();
@@ -42,17 +40,11 @@ function EdoCuentas() {
   const [inputMes, setInputMes] = useState("");
   const [inputYear, setInputYear] = useState(0);
   const [getRefrech, setGetRefrech] = useState(false);
-  const [errorlog, setlog] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false); //different!
-  const [page, setPage] = useState(1);
-  const [disabledFecha, setDisabledFecha] = useState(true);
   //************  Constantes ********* */
-  const userList = useSelector((state) => state.users.value);
   let totalIngreso = 0;
   let totalGasto = 0;
-  let inputRt = new Array();
+  let inputRt = [];
   let subTotalGasto = 0;
 
   //*************  Funciones  axios*********** */
@@ -80,7 +72,7 @@ function EdoCuentas() {
       },
     }).then((response) => {
       if (response.status === "200") {
-        setGastos(response.data.grupoGastos);
+  //      setGastos(response.data.grupoGastos);
         datosGasto = response.data.grupoGastos;
       }
     });
@@ -113,6 +105,7 @@ function EdoCuentas() {
     let descrip = "";
     subTotalGasto = 0;
     let cta = 0;
+    // eslint-disable-next-line
     planes.map((plan) => {
       plan.grupoGastoDescripcion
         ? (descrip = plan.grupoGastoDescripcion)
@@ -205,7 +198,6 @@ function EdoCuentas() {
   };
 
   const handdleRefrech = () => {
-    setPage(1);
     setGetRefrech(true);
   };
 
@@ -258,7 +250,7 @@ function EdoCuentas() {
           <Container fluid={true} className="my-3">
             <Row className="d-flex justify-space-between align-items-center fsizeTable">
               <Col sm={9} xs={8}>
-                <h3>{errorlog}</h3>
+                <h3> </h3>
                 <h3 className="fsize">Planificaciones</h3>
               </Col>
             </Row>
@@ -338,26 +330,24 @@ function EdoCuentas() {
               <h5 className="mt-5 text-center">Loading...</h5>
             </>
           )}
-          {!loading && error && (
-            <>
-              <hr />
-              <h5 className="mt-4 text-center">{errorMsg}</h5>{" "}
-            </>
-          )}
+
           {!loading && (
             <>
               <Row className="d-flex justify-space-between text-center fsizeTable my-3">
                 <h5>Gastos Presupuestados</h5>
                 <Col sx="11"></Col>
                 <Col sx="2">
-                  {selectMes.map((option) => {
-                    option.id === inputMes && (
-                      <option key={option.id}>
-                        {option.mes + "  "}
-                        {inputYear}
-                      </option>
-                    );
-                  })}
+                  {
+                    // eslint-disable-next-line
+                    selectMes.map((option) => {
+                      option.id === inputMes && (
+                        <option key={option.id}>
+                          {option.mes + "  "}
+                          {inputYear}
+                        </option>
+                      );
+                    })
+                  }
                 </Col>
               </Row>
               <hr />
@@ -387,7 +377,7 @@ function EdoCuentas() {
               </div>
             </>
           )}
-          {!loading && !error && !planes && (
+          {!loading && !planes && (
             <>
               <hr />
               <h4>No hay Registros</h4>
