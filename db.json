@@ -8,39 +8,41 @@
   "profile": {
     "name": "typicode"
   },
-    "data" :[{
-    "name": "Victor",
-    "password": "jabdjabd00",
-    "email": "victor@gmail.com",
-    "job": "Developer",
-    "avatar": "http://localhost:3000/images/1696623290378-pexels-sora-shimazaki-5926393 (1).jpg"
-  },
-  {
-    "name": "Jose Jimenez",
-    "password": "jabdjabd00",
-    "email": "jose@gmail.com",
-    "job": "FrontEnd Developer",
-    "avatar": "http://localhost:3000/images/1696623371827-Screen Shot 2022-07-20 at 16.17.26.png"
-  },
-  {
-    "name": "luis lopez",
-    "password": "jabdjabd00",
-    "email": "lopez@gmail.com",
-    "job": "UI Developer",
-    "avatar": "http://localhost:3000/images/1696623528938-OBPR9K_victor_omar__brown_peter_1962_6_15_0_4_M.png"
-  },
-  {
-    "name": "lopez Jimenez",
-    "password": "jabdjabd00",
-    "email": "jomenez@gmail.com",
-    "job": "UX Developer",
-    "avatar": "http://localhost:3000/images/1696623970639-QR Certficado digital de vacunaciÃ³n COVID-19.png"
-  },
-  {
-    "name": "Maria Contreras",
-    "password": "jabdjabd00",
-    "email": "maria@gmail.com",
-    "job": "Developer",
-    "avatar": "http://localhost:3000/images/1696639444235-OBPR9K_victor_omar__brown_peter_1962_6_15_0_4_M.png"
-  }]
+    "data" : [
+      {
+      "name": "Victor",
+      "password": "jabdjabd00",
+      "email": "victor@gmail.com",
+      "job": "Developer",
+      "avatar": "http://localhost:3000/images/1696623290378-pexels-sora-shimazaki-5926393 (1).jpg"
+    },
+    {
+      "name": "Jose Jimenez",
+      "password": "jabdjabd00",
+      "email": "jose@gmail.com",
+      "job": "FrontEnd Developer",
+      "avatar": "http://localhost:3000/images/1696623371827-Screen Shot 2022-07-20 at 16.17.26.png"
+    },
+    {
+      "name": "luis lopez",
+      "password": "jabdjabd00",
+      "email": "lopez@gmail.com",
+      "job": "UI Developer",
+      "avatar": "http://localhost:3000/images/1696623528938-OBPR9K_victor_omar__brown_peter_1962_6_15_0_4_M.png"
+    },
+    {
+      "name": "lopez Jimenez",
+      "password": "jabdjabd00",
+      "email": "jomenez@gmail.com",
+      "job": "UX Developer",
+      "avatar": "http://localhost:3000/images/1696623970639-QR Certficado digital de vacunaciÃ³n COVID-19.png"
+    },
+    {
+      "name": "Maria Contreras",
+      "password": "jabdjabd00",
+      "email": "maria@gmail.com",
+      "job": "Developer",
+      "avatar": "http://localhost:3000/images/1696639444235-OBPR9K_victor_omar__brown_peter_1962_6_15_0_4_M.png"
+    }
+  ]
 }
